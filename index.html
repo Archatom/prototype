@@ -701,7 +701,7 @@
         }
 
         /* 響應式設計 */
-        @media (max-width: 900px) {
+        /* @media (max-width: 900px) {
             .main-container {
                 flex-direction: column;
             }
@@ -742,6 +742,183 @@
             .article-actions {
                 flex-wrap: wrap;
                 gap: 10px;
+            }
+        } */
+        /* 在最後的 @media 查詢區塊中添加或修改以下樣式 */
+
+        /* 平板電腦與中等屏幕 */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .page-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                margin-top: 20px;
+            }
+
+            .content-feed {
+                max-width: 100%;
+            }
+
+            /* 個人專欄優化 */
+            .profile-info {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-avatar {
+                margin-top: -50px;
+                margin-bottom: 10px;
+            }
+
+            .profile-stats {
+                justify-content: center;
+            }
+
+            /* 收藏網格調整為 2 列 */
+            .collection-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* 手機與小屏幕 */
+        @media (max-width: 600px) {
+            .header {
+                padding: 10px 15px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .nav-buttons {
+                gap: 5px;
+            }
+
+            .nav-button {
+                padding: 5px 8px;
+                font-size: 13px;
+            }
+
+            .primary-button {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+
+            /* 文章卡片優化 */
+            .article-image {
+                height: 180px;
+            }
+
+            .article-title {
+                font-size: 18px;
+            }
+
+            .article-excerpt {
+                font-size: 14px;
+            }
+
+            .article-tags {
+                overflow-x: auto;
+                padding-bottom: 8px;
+                flex-wrap: nowrap;
+                max-width: 100%;
+            }
+
+            .article-tag {
+                white-space: nowrap;
+            }
+
+            .article-actions {
+                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: space-around;
+            }
+
+            /* 收藏網格調整為單列 */
+            .collection-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* 彈窗優化 */
+            .modal-container {
+                width: 95%;
+            }
+
+            .editor-toolbar {
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+
+            .modal-footer {
+                flex-direction: column-reverse;
+            }
+
+            .modal-footer button {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+        }
+
+        /* 超小屏幕 */
+        @media (max-width: 450px) {
+
+            /* 導航欄特別處理 */
+            .nav-buttons {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+
+            .nav-button {
+                padding: 4px 6px;
+                font-size: 12px;
+            }
+
+            /* 個人專欄統計 */
+            .profile-stats {
+                flex-wrap: wrap;
+            }
+
+            .stat-item {
+                width: 50%;
+                margin-bottom: 10px;
+            }
+
+            /* 專家列表 */
+            .expert-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .expert-avatar {
+                margin-bottom: 8px;
+            }
+
+            .follow-button {
+                align-self: stretch;
+                text-align: center;
+                margin-top: 8px;
+            }
+
+            /* 趨勢列表 */
+            .trending-item {
+                padding: 10px;
+            }
+
+            .trending-number {
+                font-size: 16px;
+            }
+
+            .trending-title {
+                font-size: 13px;
             }
         }
     </style>
