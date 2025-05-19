@@ -4,10 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="img/logo.png" type="image/x-icon">
+    <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
     <title>StockX 社群文章功能</title>
     <style>
         :root {
-            --stockx-green: #00FF00;
+            --stockx-green: #7bcf7b;
             --stockx-green-dark: #00CC00;
             --stockx-black: #000000;
             --stockx-light-gray: #f1f1f1;
@@ -226,6 +228,7 @@
             font-weight: 600;
         }
 
+        /* Article Action Buttons - Modern Style */
         .article-actions {
             display: flex;
             justify-content: space-between;
@@ -238,14 +241,58 @@
             border: none;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
             color: var(--stockx-dark-gray);
             font-size: 14px;
+            font-weight: 500;
             cursor: pointer;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
         }
 
         .action-button:hover {
+            background-color: var(--stockx-light-gray);
             color: var(--stockx-black);
+        }
+
+        .action-button svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .action-button.liked {
+            color: #E53E3E;
+        }
+
+        .action-button.liked svg {
+            fill: #E53E3E;
+        }
+
+        .action-button.saved {
+            color: var(--stockx-green);
+        }
+
+        .action-button.saved svg {
+            fill: var(--stockx-green);
+        }
+
+        /* Responsively adjust action buttons on mobile */
+        @media (max-width: 600px) {
+            .article-actions {
+                justify-content: space-around;
+            }
+
+            .action-button {
+                padding: 6px 8px;
+                font-size: 13px;
+            }
+
+            .action-button svg {
+                width: 16px;
+                height: 16px;
+            }
         }
 
         /* Product Card Styles */
@@ -587,7 +634,7 @@
         .profile-cover {
             height: 150px;
             background-color: var(--stockx-light-gray);
-            background-image: linear-gradient(to right, var(--stockx-green-dark), var(--stockx-light-gray));
+            background-image: linear-gradient(to right, var(--stockx-green), var(--stockx-light-gray));
             position: relative;
         }
 
@@ -746,7 +793,7 @@
         } */
         /* 在最後的 @media 查詢區塊中添加或修改以下樣式 */
 
-        /* 平板電腦與中等屏幕 */
+        /* 平板電腘與中等屏幕 */
         @media (max-width: 900px) {
             .main-container {
                 flex-direction: column;
@@ -1008,7 +1055,7 @@
                     <h3 class="sidebar-title">推薦專家</h3>
                     <div class="expert-list">
                         <div class="expert-item">
-                            <img src="https://picsum.photos/200/300?random=1" alt="專家頭像" class="expert-avatar">
+                            <img src="img/people1.jpg" alt="專家頭像" class="expert-avatar">
                             <div class="expert-info">
                                 <div class="expert-name">Michael Chen</div>
                                 <div class="expert-title">球鞋市場分析師</div>
@@ -1016,7 +1063,7 @@
                             <button class="follow-button">關注</button>
                         </div>
                         <div class="expert-item">
-                            <img src="https://picsum.photos/200/300?random=1" alt="專家頭像" class="expert-avatar">
+                            <img src="img/people2.jpg" alt="專家頭像" class="expert-avatar">
                             <div class="expert-info">
                                 <div class="expert-name">Sarah Wong</div>
                                 <div class="expert-title">鑑定專家</div>
@@ -1024,7 +1071,7 @@
                             <button class="follow-button following">已關注</button>
                         </div>
                         <div class="expert-item">
-                            <img src="https://picsum.photos/200/300?random=1" alt="專家頭像" class="expert-avatar">
+                            <img src="img/people3.jpg" alt="專家頭像" class="expert-avatar">
                             <div class="expert-info">
                                 <div class="expert-name">Tom Jackson</div>
                                 <div class="expert-title">潮流穿搭達人</div>
@@ -1039,21 +1086,21 @@
                     <h3 class="sidebar-title">熱門商品</h3>
                     <div class="expert-list">
                         <div class="product-card">
-                            <img src="https://picsum.photos/200/300?random=1" alt="熱門商品" class="product-image">
+                            <img src="img/1.jpg" alt="熱門商品" class="product-image">
                             <div class="product-details">
                                 <div class="product-title">Nike SB Dunk Low "Travis Scott"</div>
                                 <div class="product-price">$1,250 USD</div>
                             </div>
                         </div>
                         <div class="product-card">
-                            <img src="https://picsum.photos/200/300?random=1" alt="熱門商品" class="product-image">
+                            <img src="img/2.jpg" alt="熱門商品" class="product-image">
                             <div class="product-details">
                                 <div class="product-title">Air Jordan 4 "Red Thunder"</div>
                                 <div class="product-price">$480 USD</div>
                             </div>
                         </div>
                         <div class="product-card">
-                            <img src="https://picsum.photos/200/300?random=1" alt="熱門商品" class="product-image">
+                            <img src="img/3.jpg" alt="熱門商品" class="product-image">
                             <div class="product-details">
                                 <div class="product-title">Adidas Yeezy Slide "Onyx"</div>
                                 <div class="product-price">$160 USD</div>
@@ -1105,7 +1152,7 @@
                 <div class="profile-header">
                     <div class="profile-cover"></div>
                     <div class="profile-info">
-                        <img src="https://picsum.photos/200/300?random=1" alt="用戶頭像" class="profile-avatar">
+                        <img src="img/people7.jpg" alt="用戶頭像" class="profile-avatar">
                         <div class="profile-details">
                             <h2 class="profile-name">你的名字</h2>
                             <p class="profile-bio">分享我的球鞋收藏與穿搭心得</p>
@@ -1145,22 +1192,22 @@
                     <div class="collection-grid">
                         <!-- 收藏的商品預覽 -->
                         <div class="collection-item">
-                            <img src="https://picsum.photos/200/300?random=1" alt="收藏商品" class="collection-image">
+                            <img src="img/4.jpg" alt="收藏商品" class="collection-image">
                         </div>
                         <div class="collection-item">
-                            <img src="https://picsum.photos/200/300?random=1" alt="收藏商品" class="collection-image">
+                            <img src="img/3.jpg" alt="收藏商品" class="collection-image">
                         </div>
                         <div class="collection-item">
-                            <img src="https://picsum.photos/200/300?random=1" alt="收藏商品" class="collection-image">
+                            <img src="img/2.jpg" alt="收藏商品" class="collection-image">
                         </div>
                         <div class="collection-item">
-                            <img src="https://picsum.photos/200/300?random=1" alt="收藏商品" class="collection-image">
+                            <img src="img/1.jpg" alt="收藏商品" class="collection-image">
                         </div>
                         <div class="collection-item">
-                            <img src="https://picsum.photos/200/300?random=1" alt="收藏商品" class="collection-image">
+                            <img src="img/4.jpg" alt="收藏商品" class="collection-image">
                         </div>
                         <div class="collection-item">
-                            <img src="https://picsum.photos/200/300?random=1" alt="收藏商品" class="collection-image">
+                            <img src="img/5.jpg" alt="收藏商品" class="collection-image">
                         </div>
                     </div>
                     <div class="text-center">
@@ -1219,7 +1266,7 @@
                     <div class="product-search">
                         <input type="text" class="tag-input" placeholder="搜尋要關聯的產品...">
                         <div class="product-card">
-                            <img src="https://picsum.photos/200/300?random=1" alt="關聯商品" class="product-image">
+                            <img src="img/3.jpg" alt="關聯商品" class="product-image">
                             <div class="product-details">
                                 <div class="product-title">Air Jordan 1 High OG "Chicago Reimagined"</div>
                                 <div class="product-price">$450 USD</div>
@@ -1244,10 +1291,10 @@
                 excerpt: "想入手你的第一雙球鞋？Nike Dunk Low 與 Air Jordan 1 Low 都是不錯的選擇。本文比較兩款經典鞋型的舒適度、耐用性、價格和轉售價值，幫助你做出最適合的選擇。",
                 author: {
                     name: "Michael Chen",
-                    avatar: "https://picsum.photos/200/300?random=1"
+                    avatar: "img/people1.jpg"
                 },
                 date: "2023-10-15",
-                image: "https://picsum.photos/200/300?random=1",
+                image: "img/1.jpg",
                 tags: ["Nike Dunk", "Air Jordan", "球鞋比較", "入門指南"],
                 likes: 342,
                 comments: 56,
@@ -1259,10 +1306,10 @@
                 excerpt: "秋季將有多款重磅聯名球鞋發售，從 Travis Scott 新作到 Supreme 聯名系列，這些限量款式預計將引起市場高度關注。本文為你整理了即將發售的重要資訊和市場預測。",
                 author: {
                     name: "Sarah Wong",
-                    avatar: "https://picsum.photos/200/300?random=1"
+                    avatar: "img/people2.jpg"
                 },
                 date: "2023-09-28",
-                image: "https://picsum.photos/200/300?random=1",
+                image: "img/2.jpg",
                 tags: ["聯名系列", "Travis Scott", "Supreme", "發售預告"],
                 likes: 289,
                 comments: 43,
@@ -1274,10 +1321,10 @@
                 excerpt: "隨著 Air Jordan 4 \"Red Thunder\" 的熱度持續上升，市場上的仿冒品也逐漸增多。本文由鑑定專家分享辨別真偽的 5 個關鍵細節，包括鞋盒標籤、接縫、材質和特殊標記。",
                 author: {
                     name: "Jack Liu",
-                    avatar: "https://picsum.photos/200/300?random=1"
+                    avatar: "img/people3.jpg"
                 },
                 date: "2023-10-02",
-                image: "https://picsum.photos/200/300?random=1",
+                image: "img/3.jpg",
                 tags: ["Air Jordan 4", "真假鑑定", "Red Thunder", "球鞋知識"],
                 likes: 561,
                 comments: 132,
@@ -1289,10 +1336,10 @@
                 excerpt: "球鞋不只是穿著的配件，更是有潛力的投資標的。本文分析當前球鞋轉售市場的關鍵趨勢，並提供新手投資者應該關注的品牌、系列和注意事項，幫助你在球鞋投資領域做出明智決策。",
                 author: {
                     name: "Emily Zhang",
-                    avatar: "https://picsum.photos/200/300?random=1"
+                    avatar: "img/people4.webp"
                 },
                 date: "2023-09-20",
-                image: "https://picsum.photos/200/300?random=1",
+                image: "img/4.jpg",
                 tags: ["球鞋投資", "市場分析", "轉售市場", "投資指南"],
                 likes: 426,
                 comments: 78,
@@ -1304,10 +1351,10 @@
                 excerpt: "每個球鞋愛好者都有自己的收藏故事。本文分享我從第一雙 Nike Air Force 1 開始的球鞋收藏之旅，包括難忘的排隊經歷、值得紀念的限量款，以及這些年來球鞋文化的變遷。",
                 author: {
                     name: "Tom Jackson",
-                    avatar: "https://picsum.photos/200/300?random=1"
+                    avatar: "img/people5.jpg"
                 },
                 date: "2023-10-10",
-                image: "https://picsum.photos/200/300?random=1",
+                image: "img/5.jpg",
                 tags: ["球鞋收藏", "Air Force 1", "球鞋文化", "個人故事"],
                 likes: 317,
                 comments: 65,
@@ -1323,10 +1370,10 @@
                 excerpt: "經典黑白配色的 Nike SB Dunk Low \"Panda\" 近期備受關注。本文從材質、腳感、日常穿搭等角度進行評測，並分析這款配色在市場上的定位與未來走勢。",
                 author: {
                     name: "Sarah Wong",
-                    avatar: "https://picsum.photos/200/300?random=1"
+                    avatar: "img/people2.jpg"
                 },
                 date: "2023-10-12",
-                image: "https://picsum.photos/200/300?random=1",
+                image: "img/1.jpg",
                 tags: ["Nike SB Dunk", "Panda", "球鞋評測", "配色分析"],
                 likes: 256,
                 comments: 48,
@@ -1338,10 +1385,10 @@
                 excerpt: "Virgil Abloh 設計的 Louis Vuitton x Nike Air Force 1 是街頭文化與奢侈品牌結合的代表作。本文深入解析這款聯名的設計理念、創新元素和文化意義。",
                 author: {
                     name: "Michael Chen",
-                    avatar: "https://picsum.photos/200/300?random=1"
+                    avatar: "img/people1.jpg"
                 },
                 date: "2023-09-25",
-                image: "https://picsum.photos/200/300?random=1",
+                image: "img/2.jpg",
                 tags: ["Louis Vuitton", "Air Force 1", "Virgil Abloh", "聯名解析"],
                 likes: 487,
                 comments: 92,
@@ -1357,10 +1404,10 @@
                 excerpt: "作為一名 AJ1 忠實粉絲，我收集了超過 25 款不同配色的 Air Jordan 1。本文展示我的完整收藏，並分享每款配色背後的故事和入手經歷。",
                 author: {
                     name: "你的名字",
-                    avatar: "https://picsum.photos/200/300?random=1"
+                    avatar: "img/people7.jpg"
                 },
                 date: "2023-10-05",
-                image: "https://picsum.photos/200/300?random=1",
+                image: "img/3.jpg",
                 tags: ["球鞋收藏", "Air Jordan 1", "配色分享", "收藏展示"],
                 likes: 215,
                 comments: 42,
@@ -1372,10 +1419,10 @@
                 excerpt: "正確的保養可以延長球鞋的壽命並維持其價值。本文分享專業的球鞋清潔、存放和防污技巧，確保你的珍貴收藏始終保持最佳狀態。",
                 author: {
                     name: "你的名字",
-                    avatar: "https://picsum.photos/200/300?random=1"
+                    avatar: "img/people7.jpg"
                 },
                 date: "2023-09-18",
-                image: "https://picsum.photos/200/300?random=1",
+                image: "img/4.jpg",
                 tags: ["球鞋保養", "清潔技巧", "收藏維護", "實用指南"],
                 likes: 183,
                 comments: 36,
@@ -1388,19 +1435,19 @@
             {
                 name: "Sarah Wong",
                 title: "鑑定專家",
-                avatar: "https://picsum.photos/200/300?random=1",
+                avatar: "img/people2.jpg",
                 following: true
             },
             {
                 name: "Michael Chen",
                 title: "球鞋市場分析師",
-                avatar: "https://picsum.photos/200/300?random=1",
+                avatar: "img/people1.jpg",
                 following: true
             },
             {
                 name: "Lisa Johnson",
                 title: "時尚編輯",
-                avatar: "https://picsum.photos/200/300?random=1",
+                avatar: "img/people4.webp",
                 following: true
             }
         ];
@@ -1410,13 +1457,13 @@
             {
                 name: "David Kim",
                 title: "限量球鞋收藏家",
-                avatar: "https://picsum.photos/200/300?random=1",
+                avatar: "img/people5.jpg",
                 following: false
             },
             {
                 name: "Rachel Lee",
                 title: "街頭文化專家",
-                avatar: "https://picsum.photos/200/300?random=1",
+                avatar: "img/people6.jpg",
                 following: false
             }
         ];
@@ -1441,17 +1488,29 @@
                             ${article.tags.map(tag => `<span class="article-tag">${tag}</span>`).join('')}
                         </div>
                         <div class="article-actions">
-                            <button class="action-button">
-                                <span>👍</span> ${article.likes}
+                            <button class="action-button" title="讚">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                </svg>
+                                ${article.likes}
                             </button>
-                            <button class="action-button">
-                                <span>💬</span> ${article.comments}
+                            <button class="action-button" title="評論">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21.99,4c0-1.1-0.89-2-1.99-2H4C2.9,2,2,2.9,2,4v12c0,1.1,0.9,2,2,2h14l4,4L21.99,4z M18,14H6v-2h12V14z M18,11H6V9h12V11z M18,8H6V6h12V8z"></path>
+                                </svg>
+                                ${article.comments}
                             </button>
-                            <button class="action-button">
-                                <span>🔗</span> ${article.shares}
+                            <button class="action-button" title="分享">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18,16.08c-0.76,0-1.44,0.3-1.96,0.77L8.91,12.7C8.96,12.47,9,12.24,9,12s-0.04-0.47-0.09-0.7l7.05-4.11C16.5,7.69,17.21,8,18,8c1.66,0,3-1.34,3-3s-1.34-3-3-3s-3,1.34-3,3c0,0.24,0.04,0.47,0.09,0.7L8.04,9.81C7.5,9.31,6.79,9,6,9c-1.66,0-3,1.34-3,3s1.34,3,3,3c0.79,0,1.5-0.31,2.04-0.81l7.12,4.16c-0.05,0.21-0.08,0.43-0.08,0.65c0,1.61,1.31,2.92,2.92,2.92s2.92-1.31,2.92-2.92C20.92,17.39,19.61,16.08,18,16.08z"></path>
+                                </svg>
+                                ${article.shares}
                             </button>
-                            <button class="action-button">
-                                <span>🔖</span> 收藏
+                            <button class="action-button" title="收藏">
+                                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17,3H7C5.9,3,5,3.9,5,5v16l7-3l7,3V5C19,3.9,18.1,3,17,3z"></path>
+                                </svg>
+                                收藏
                             </button>
                         </div>
                     </div>
@@ -1494,7 +1553,11 @@
             renderExperts('following-experts', followingExperts);
             renderExperts('recommended-experts', recommendedExperts);
 
-            // 頁面導航切換
+
+            categorizeArticles();
+            initAllTabSwitching();
+
+            // 頁面導航切換時重新初始化標籤
             const navButtons = document.querySelectorAll('.nav-button[data-page]');
             navButtons.forEach(button => {
                 button.addEventListener('click', function () {
@@ -1507,6 +1570,28 @@
                     // 更新活動按鈕樣式
                     navButtons.forEach(btn => btn.classList.remove('active'));
                     this.classList.add('active');
+
+                    // 頁面切換後，重新初始化當前頁面的標籤
+                    if (targetPage === 'discover') {
+                        initTabSwitching('discover-page', {
+                            '為你推薦': articles.filter(a => a.category === 'recommended'),
+                            '最新文章': articles.filter(a => a.category === 'latest'),
+                            '熱門文章': articles.filter(a => a.category === 'popular'),
+                            '真假鑑定': articles.filter(a => a.category === 'verification')
+                        }, 'discover-articles', articles);
+                    } else if (targetPage === 'following') {
+                        initTabSwitching('following-page', {
+                            '全部文章': followingArticles,
+                            '專家文章': followingArticles.filter(a => a.category === 'expert'),
+                            '好友動態': followingArticles.filter(a => a.category === 'friend')
+                        }, 'following-articles', followingArticles);
+                    } else if (targetPage === 'personal') {
+                        initTabSwitching('personal-page', {
+                            '我的文章': personalArticles.filter(a => a.category === 'my'),
+                            '已保存': personalArticles.filter(a => a.category === 'saved'),
+                            '草稿': personalArticles.filter(a => a.category === 'draft')
+                        }, 'personal-articles', personalArticles);
+                    }
                 });
             });
 
@@ -1619,6 +1704,35 @@
                 this.style.display = 'none';
                 // 這裡可以添加加載新文章的邏輯
             });
+
+            // 添加文章操作按鈕的交互效果
+            document.addEventListener('click', function (e) {
+                // 點擊讚按鈕的效果
+                if (e.target.closest('.action-button[title="讚"]')) {
+                    const likeButton = e.target.closest('.action-button');
+                    likeButton.classList.toggle('liked');
+
+                    // 更新讚數 (僅用於演示)
+                    const currentLikes = parseInt(likeButton.textContent.trim());
+                    if (likeButton.classList.contains('liked')) {
+                        likeButton.lastChild.textContent = currentLikes + 1;
+                    } else {
+                        likeButton.lastChild.textContent = currentLikes - 1;
+                    }
+                }
+
+                // 點擊收藏按鈕的效果
+                if (e.target.closest('.action-button[title="收藏"]')) {
+                    const saveButton = e.target.closest('.action-button');
+                    saveButton.classList.toggle('saved');
+
+                    if (saveButton.classList.contains('saved')) {
+                        saveButton.lastChild.textContent = ' 已收藏';
+                    } else {
+                        saveButton.lastChild.textContent = ' 收藏';
+                    }
+                }
+            });
         });/* filepath: c:\Users\user\Desktop\prototype\index.html */
         /* 在現有的 script 標籤內，document.addEventListener('DOMContentLoaded', function ()... 內部添加 */
 
@@ -1648,6 +1762,107 @@
                 navButtonsContainer.classList.remove('active');
             }
         });
+
+        // 在現有的 script 標籤內添加以下代碼，在 document.addEventListener('DOMContentLoaded', function () {...}) 函數內部添加
+
+        // 為所有文章添加分類標籤
+        function categorizeArticles() {
+            // 發現頁面文章分類
+            articles.forEach(article => {
+                article.category = article.tags.includes("真假鑑定") ? "verification" :
+                    article.date > "2023-10-01" ? "latest" :
+                        article.likes > 400 ? "popular" : "recommended";
+            });
+
+            // 關注頁面文章分類
+            followingArticles.forEach(article => {
+                article.category = article.author.name === "Sarah Wong" || article.author.name === "Michael Chen" ? "expert" : "friend";
+            });
+
+            // 個人頁面文章分類
+            personalArticles.forEach((article, index) => {
+                // 模擬不同類別的文章，實際應用中應該有明確的分類
+                article.category = index % 3 === 0 ? "draft" :
+                    index % 2 === 0 ? "saved" : "my";
+            });
+        }
+
+        // 初始化所有標籤切換功能
+        function initAllTabSwitching() {
+            // 發現頁面標籤切換
+            initTabSwitching('discover-page', {
+                '為你推薦': articles.filter(a => a.category === 'recommended'),
+                '最新文章': articles.filter(a => a.category === 'latest'),
+                '熱門文章': articles.filter(a => a.category === 'popular'),
+                '真假鑑定': articles.filter(a => a.category === 'verification')
+            }, 'discover-articles', articles);
+
+            // 關注頁面標籤切換
+            initTabSwitching('following-page', {
+                '全部文章': followingArticles,
+                '專家文章': followingArticles.filter(a => a.category === 'expert'),
+                '好友動態': followingArticles.filter(a => a.category === 'friend')
+            }, 'following-articles', followingArticles);
+
+            // 個人專欄頁面標籤切換
+            initTabSwitching('personal-page', {
+                '我的文章': personalArticles.filter(a => a.category === 'my'),
+                '已保存': personalArticles.filter(a => a.category === 'saved'),
+                '草稿': personalArticles.filter(a => a.category === 'draft')
+            }, 'personal-articles', personalArticles);
+        }
+
+        // 為特定頁面初始化標籤切換功能
+        function initTabSwitching(pageId, tabMapping, articlesContainerId, defaultArticles) {
+            const page = document.getElementById(pageId);
+            if (!page) return;
+
+            const tabs = page.querySelectorAll('.feed-tab');
+            if (!tabs.length) return;
+
+            // 為每個標籤添加點擊事件
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    // 更新標籤樣式
+                    tabs.forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+
+                    const tabText = this.textContent.trim();
+
+                    // 獲取對應標籤的文章
+                    let articlesToShow = tabMapping[tabText] || defaultArticles;
+
+                    // 如果沒有匹配的文章，顯示默認文章列表
+                    if (!articlesToShow || articlesToShow.length === 0) {
+                        articlesToShow = defaultArticles;
+                    }
+
+                    // 渲染文章
+                    renderArticles(articlesContainerId, articlesToShow);
+                });
+            });
+
+            // 初始化第一個標籤為激活狀態
+            const activeTab = tabs[0].textContent.trim();
+            const initialArticles = tabMapping[activeTab] || defaultArticles;
+
+            // 首次載入設置默認文章
+            if (initialArticles && initialArticles.length > 0) {
+                renderArticles(articlesContainerId, initialArticles);
+            } else {
+                renderArticles(articlesContainerId, defaultArticles);
+            }
+        }
+
+        // 添加以下代碼到初始化部分
+        categorizeArticles();
+        initAllTabSwitching();
+
+        // 移除原本的文章渲染代碼，因為現在由標籤初始化時處理
+        // renderArticles('discover-articles', articles);
+        // renderArticles('following-articles', followingArticles);
+        // renderArticles('personal-articles', personalArticles);
+
     </script>
 </body>
 

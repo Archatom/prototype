@@ -1,0 +1,1654 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StockX 社群文章功能</title>
+    <style>
+        :root {
+            --stockx-green: #00FF00;
+            --stockx-green-dark: #00CC00;
+            --stockx-black: #000000;
+            --stockx-light-gray: #f1f1f1;
+            --stockx-gray: #cccccc;
+            --stockx-dark-gray: #333333;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+
+        body {
+            background-color: white;
+            color: var(--stockx-black);
+        }
+
+        /* Header Styles */
+        .header {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            padding: 15px 30px;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 24px;
+            color: var(--stockx-black);
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--stockx-green);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            padding: 8px 15px;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+
+        .nav-button:hover {
+            background-color: var(--stockx-light-gray);
+        }
+
+        .primary-button {
+            background-color: var(--stockx-black);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .primary-button:hover {
+            background-color: var(--stockx-dark-gray);
+        }
+
+        .primary-button.green {
+            background-color: var(--stockx-green);
+            color: var(--stockx-black);
+        }
+
+        .primary-button.green:hover {
+            background-color: var(--stockx-green-dark);
+        }
+
+        /* Main Content Styles */
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            display: flex;
+            gap: 30px;
+        }
+
+        .page-content {
+            display: flex;
+            width: 100%;
+            gap: 30px;
+        }
+
+        .content-feed {
+            flex: 1;
+            min-width: 0;
+            /* 防止內容溢出 */
+            max-width: calc(100% - 330px);
+            /* 確保不會與側邊欄重疊 */
+        }
+
+        .sidebar {
+            width: 300px;
+            flex-shrink: 0;
+            /* 防止側邊欄縮小 */
+            position: sticky;
+            top: 80px;
+            align-self: flex-start;
+        }
+
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .feed-title {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .feed-tabs {
+            display: flex;
+            border-bottom: 1px solid var(--stockx-gray);
+            margin-bottom: 20px;
+        }
+
+        .feed-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            border-bottom: 3px solid transparent;
+        }
+
+        .feed-tab.active {
+            border-bottom: 3px solid var(--stockx-green);
+        }
+
+        /* Article Card Styles */
+        .article-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .article-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .article-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .article-content {
+            padding: 20px;
+        }
+
+        .article-meta {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: var(--stockx-dark-gray);
+        }
+
+        .author-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .article-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--stockx-black);
+        }
+
+        .article-excerpt {
+            color: #555;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .article-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .article-tag {
+            background-color: var(--stockx-light-gray);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .article-actions {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 15px;
+            border-top: 1px solid var(--stockx-light-gray);
+        }
+
+        .action-button {
+            background: none;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--stockx-dark-gray);
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .action-button:hover {
+            color: var(--stockx-black);
+        }
+
+        /* Product Card Styles */
+        .product-card {
+            display: flex;
+            background-color: var(--stockx-light-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+
+        .product-image {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .product-details {
+            padding: 12px;
+            flex: 1;
+        }
+
+        .product-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        .product-price {
+            color: var(--stockx-green);
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .price-trend {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: #28a745;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 300px;
+            position: sticky;
+            top: 80px;
+            align-self: flex-start;
+        }
+
+        .sidebar-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: bold;
+            padding: 15px;
+            border-bottom: 1px solid var(--stockx-light-gray);
+        }
+
+        .trending-list {
+            list-style: none;
+        }
+
+        .trending-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--stockx-light-gray);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .trending-number {
+            font-weight: bold;
+            color: var(--stockx-black);
+            font-size: 18px;
+            min-width: 20px;
+        }
+
+        .trending-title {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .expert-list {
+            padding: 15px;
+        }
+
+        .expert-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            gap: 10px;
+        }
+
+        .expert-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .expert-info {
+            flex: 1;
+        }
+
+        .expert-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .expert-title {
+            font-size: 12px;
+            color: var(--stockx-dark-gray);
+        }
+
+        .follow-button {
+            background-color: transparent;
+            border: 1px solid var(--stockx-black);
+            color: var(--stockx-black);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .follow-button:hover {
+            background-color: var(--stockx-black);
+            color: white;
+        }
+
+        .follow-button.following {
+            background-color: var(--stockx-black);
+            color: white;
+        }
+
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-container {
+            background-color: white;
+            border-radius: 8px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--stockx-dark-gray);
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--stockx-light-gray);
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .modal-body {
+            padding: 20px;
+        }
+
+        .editor-container {
+            margin-bottom: 20px;
+        }
+
+        .editor-title {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            border-bottom: 1px solid var(--stockx-light-gray);
+            margin-bottom: 15px;
+            outline: none;
+        }
+
+        .editor-content {
+            width: 100%;
+            min-height: 200px;
+            padding: 10px 0;
+            font-size: 16px;
+            line-height: 1.6;
+            border: none;
+            outline: none;
+            resize: none;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--stockx-light-gray);
+        }
+
+        .toolbar-button {
+            background: none;
+            border: none;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .toolbar-button:hover {
+            background-color: var(--stockx-light-gray);
+        }
+
+        .tag-input-container {
+            margin-bottom: 20px;
+        }
+
+        .tag-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--stockx-gray);
+            border-radius: 4px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .tag-input::placeholder {
+            color: var(--stockx-dark-gray);
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .tag-item {
+            background-color: var(--stockx-light-gray);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .tag-remove {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            color: var(--stockx-dark-gray);
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--stockx-light-gray);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .secondary-button {
+            background-color: white;
+            color: var(--stockx-black);
+            border: 1px solid var(--stockx-gray);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .secondary-button:hover {
+            background-color: var(--stockx-light-gray);
+        }
+
+        /* 新文章通知 */
+        .new-posts-alert {
+            background-color: var(--stockx-green);
+            color: var(--stockx-black);
+            text-align: center;
+            padding: 10px;
+            font-weight: 600;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            display: none;
+        }
+
+        /* 這些內容應該添加在現有 <style> 標籤內，在最後的 @media 查詢之前 */
+
+        /* 個人專欄頁面樣式 */
+        .profile-header {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .profile-cover {
+            height: 150px;
+            background-color: var(--stockx-light-gray);
+            background-image: linear-gradient(to right, var(--stockx-green-dark), var(--stockx-light-gray));
+            position: relative;
+        }
+
+        .profile-info {
+            padding: 20px;
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 4px solid white;
+            margin-top: -40px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-details {
+            flex: 1;
+        }
+
+        .profile-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .profile-bio {
+            color: var(--stockx-dark-gray);
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 25px;
+            margin-top: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: var(--stockx-dark-gray);
+        }
+
+        /* 收藏網格樣式 */
+        .collection-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            padding: 15px;
+        }
+
+        .collection-item {
+            aspect-ratio: 1;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .collection-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.2s;
+        }
+
+        .collection-image:hover {
+            transform: scale(1.05);
+        }
+
+        .text-center {
+            text-align: center;
+            padding: 15px;
+        }
+
+        /* 統計列表樣式 */
+        .stats-list {
+            padding: 15px;
+        }
+
+        .stats-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--stockx-light-gray);
+        }
+
+        .stats-item:last-child {
+            border-bottom: none;
+        }
+
+        .stats-label {
+            font-size: 14px;
+            color: var(--stockx-dark-gray);
+        }
+
+        .stats-value {
+            font-weight: 600;
+        }
+
+        /* 響應式設計 */
+        /* @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 10px 15px;
+            }
+
+            .nav-buttons {
+                gap: 10px;
+            }
+
+            .nav-button {
+                padding: 6px 10px;
+                font-size: 14px;
+            }
+
+            .primary-button {
+                padding: 8px 12px;
+                font-size: 14px;
+            }
+
+            .article-image {
+                height: 180px;
+            }
+
+            .article-title {
+                font-size: 18px;
+            }
+
+            .article-actions {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+        } */
+        /* 在最後的 @media 查詢區塊中添加或修改以下樣式 */
+
+        /* 平板電腦與中等屏幕 */
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+                padding: 15px;
+            }
+
+            .page-content {
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                position: static;
+                margin-top: 20px;
+            }
+
+            .content-feed {
+                max-width: 100%;
+            }
+
+            /* 個人專欄優化 */
+            .profile-info {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+
+            .profile-avatar {
+                margin-top: -50px;
+                margin-bottom: 10px;
+            }
+
+            .profile-stats {
+                justify-content: center;
+            }
+
+            /* 收藏網格調整為 2 列 */
+            .collection-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* 手機與小屏幕 */
+        @media (max-width: 600px) {
+            .header {
+                padding: 10px 15px;
+            }
+
+            .logo {
+                font-size: 20px;
+            }
+
+            .nav-buttons {
+                gap: 5px;
+            }
+
+            .nav-button {
+                padding: 5px 8px;
+                font-size: 13px;
+            }
+
+            .primary-button {
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+
+            /* 文章卡片優化 */
+            .article-image {
+                height: 180px;
+            }
+
+            .article-title {
+                font-size: 18px;
+            }
+
+            .article-excerpt {
+                font-size: 14px;
+            }
+
+            .article-tags {
+                overflow-x: auto;
+                padding-bottom: 8px;
+                flex-wrap: nowrap;
+                max-width: 100%;
+            }
+
+            .article-tag {
+                white-space: nowrap;
+            }
+
+            .article-actions {
+                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: space-around;
+            }
+
+            /* 收藏網格調整為單列 */
+            .collection-grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* 彈窗優化 */
+            .modal-container {
+                width: 95%;
+            }
+
+            .editor-toolbar {
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+
+            .modal-footer {
+                flex-direction: column-reverse;
+            }
+
+            .modal-footer button {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+        }
+
+
+        /* 漢堡菜單按鈕 - 默認隱藏 */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: var(--stockx-black);
+        }
+
+        /* 修改超小螢幕下的導航欄樣式 */
+        @media (max-width: 600px) {
+            .header {
+                position: relative;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .nav-buttons {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                flex-direction: column;
+                background-color: white;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                padding: 10px 0;
+                z-index: 99;
+                align-items: flex-start;
+            }
+
+            .nav-buttons.active {
+                display: flex;
+            }
+
+            .nav-buttons button {
+                width: 100%;
+                text-align: left;
+                padding: 12px 20px;
+                border-radius: 0;
+                margin: 0;
+            }
+
+            #writeButton.primary-button {
+                margin: 10px 20px;
+                width: calc(100% - 40px);
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 頁面標題列 -->
+    <!-- <header class="header">
+        <a href="#" class="logo">Stock<span>X</span> Community</a>
+        <div class="nav-buttons">
+            <button class="nav-button" data-page="discover">發現</button>
+            <button class="nav-button" data-page="following">關注</button>
+            <button class="nav-button" data-page="personal">個人專欄</button>
+            <button id="writeButton" class="primary-button green">發布文章</button>
+        </div>
+    </header> -->
+    <!-- 修改 header 部分 -->
+    <header class="header">
+        <a href="#" class="logo">Stock<span>X</span> Community</a>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        <div class="nav-buttons">
+            <button class="nav-button" data-page="discover">發現</button>
+            <button class="nav-button" data-page="following">關注</button>
+            <button class="nav-button" data-page="personal">個人專欄</button>
+            <button id="writeButton" class="primary-button green">發布文章</button>
+        </div>
+    </header>
+    <!-- 主要內容區塊 -->
+    <div class="main-container">
+        <!-- 發現頁面 (預設顯示) -->
+        <div class="page-content" id="discover-page">
+            <!-- 原本的文章列表區 -->
+            <div class="content-feed">
+                <div class="feed-header">
+                    <h2 class="feed-title">潮流社區</h2>
+                    <button class="secondary-button">篩選</button>
+                </div>
+
+                <div class="feed-tabs">
+                    <div class="feed-tab active">為你推薦</div>
+                    <div class="feed-tab">最新文章</div>
+                    <div class="feed-tab">熱門文章</div>
+                    <div class="feed-tab">真假鑑定</div>
+                </div>
+
+                <div class="new-posts-alert" id="newPostsAlert">
+                    顯示 5 個新文章
+                </div>
+
+                <!-- 文章卡片 -->
+                <div id="discover-articles">
+                    <!-- 文章卡片將由 JavaScript 渲染 -->
+                </div>
+            </div>
+
+            <!-- 側邊欄 -->
+            <div class="sidebar">
+                <!-- 熱門話題 -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">熱門話題</h3>
+                    <ul class="trending-list">
+                        <li class="trending-item">
+                            <span class="trending-number">1</span>
+                            <span class="trending-title">Nike Dunk vs. AJ1：哪款更值得投資？</span>
+                        </li>
+                        <li class="trending-item">
+                            <span class="trending-number">2</span>
+                            <span class="trending-title">2025 春季最值得期待的 10 款聯名球鞋</span>
+                        </li>
+                        <li class="trending-item">
+                            <span class="trending-number">3</span>
+                            <span class="trending-title">Yeezy 市場崩盤了嗎？數據告訴你真相</span>
+                        </li>
+                        <li class="trending-item">
+                            <span class="trending-number">4</span>
+                            <span class="trending-title">新手常犯的 5 個購買球鞋錯誤</span>
+                        </li>
+                        <li class="trending-item">
+                            <span class="trending-number">5</span>
+                            <span class="trending-title">Travis Scott x Nike 新配色資訊整理</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 推薦專家 -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">推薦專家</h3>
+                    <div class="expert-list">
+                        <div class="expert-item">
+                            <img src="https://picsum.photos/200/300?random=1" alt="專家頭像" class="expert-avatar">
+                            <div class="expert-info">
+                                <div class="expert-name">Michael Chen</div>
+                                <div class="expert-title">球鞋市場分析師</div>
+                            </div>
+                            <button class="follow-button">關注</button>
+                        </div>
+                        <div class="expert-item">
+                            <img src="https://picsum.photos/200/300?random=1" alt="專家頭像" class="expert-avatar">
+                            <div class="expert-info">
+                                <div class="expert-name">Sarah Wong</div>
+                                <div class="expert-title">鑑定專家</div>
+                            </div>
+                            <button class="follow-button following">已關注</button>
+                        </div>
+                        <div class="expert-item">
+                            <img src="https://picsum.photos/200/300?random=1" alt="專家頭像" class="expert-avatar">
+                            <div class="expert-info">
+                                <div class="expert-name">Tom Jackson</div>
+                                <div class="expert-title">潮流穿搭達人</div>
+                            </div>
+                            <button class="follow-button">關注</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 熱門商品 -->
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">熱門商品</h3>
+                    <div class="expert-list">
+                        <div class="product-card">
+                            <img src="https://picsum.photos/200/300?random=1" alt="熱門商品" class="product-image">
+                            <div class="product-details">
+                                <div class="product-title">Nike SB Dunk Low "Travis Scott"</div>
+                                <div class="product-price">$1,250 USD</div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://picsum.photos/200/300?random=1" alt="熱門商品" class="product-image">
+                            <div class="product-details">
+                                <div class="product-title">Air Jordan 4 "Red Thunder"</div>
+                                <div class="product-price">$480 USD</div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <img src="https://picsum.photos/200/300?random=1" alt="熱門商品" class="product-image">
+                            <div class="product-details">
+                                <div class="product-title">Adidas Yeezy Slide "Onyx"</div>
+                                <div class="product-price">$160 USD</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 關注頁面 -->
+        <div class="page-content" id="following-page" style="display: none;">
+            <div class="content-feed">
+                <div class="feed-header">
+                    <h2 class="feed-title">我的關注</h2>
+                </div>
+
+                <div class="feed-tabs">
+                    <div class="feed-tab active">全部文章</div>
+                    <div class="feed-tab">專家文章</div>
+                    <div class="feed-tab">好友動態</div>
+                </div>
+
+                <div id="following-articles">
+                    <!-- 關注的文章將在這裡顯示 -->
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">我關注的專家</h3>
+                    <div class="expert-list" id="following-experts">
+                        <!-- 關注的專家列表 -->
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">推薦關注</h3>
+                    <div class="expert-list" id="recommended-experts">
+                        <!-- 推薦關注列表 -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 個人專欄頁面 -->
+        <div class="page-content" id="personal-page" style="display: none;">
+            <div class="content-feed">
+                <div class="profile-header">
+                    <div class="profile-cover"></div>
+                    <div class="profile-info">
+                        <img src="https://picsum.photos/200/300?random=1" alt="用戶頭像" class="profile-avatar">
+                        <div class="profile-details">
+                            <h2 class="profile-name">你的名字</h2>
+                            <p class="profile-bio">分享我的球鞋收藏與穿搭心得</p>
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <div class="stat-value">28</div>
+                                    <div class="stat-label">文章</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">1.2k</div>
+                                    <div class="stat-label">關注者</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value">142</div>
+                                    <div class="stat-label">已關注</div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="secondary-button">編輯個人資料</button>
+                    </div>
+                </div>
+
+                <div class="feed-tabs">
+                    <div class="feed-tab active">我的文章</div>
+                    <div class="feed-tab">已保存</div>
+                    <div class="feed-tab">草稿</div>
+                </div>
+
+                <div id="personal-articles">
+                    <!-- 個人文章將在這裡顯示 -->
+                </div>
+            </div>
+
+            <div class="sidebar">
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">我的收藏</h3>
+                    <div class="collection-grid">
+                        <!-- 收藏的商品預覽 -->
+                        <div class="collection-item">
+                            <img src="https://picsum.photos/200/300?random=1" alt="收藏商品" class="collection-image">
+                        </div>
+                        <div class="collection-item">
+                            <img src="https://picsum.photos/200/300?random=1" alt="收藏商品" class="collection-image">
+                        </div>
+                        <div class="collection-item">
+                            <img src="https://picsum.photos/200/300?random=1" alt="收藏商品" class="collection-image">
+                        </div>
+                        <div class="collection-item">
+                            <img src="https://picsum.photos/200/300?random=1" alt="收藏商品" class="collection-image">
+                        </div>
+                        <div class="collection-item">
+                            <img src="https://picsum.photos/200/300?random=1" alt="收藏商品" class="collection-image">
+                        </div>
+                        <div class="collection-item">
+                            <img src="https://picsum.photos/200/300?random=1" alt="收藏商品" class="collection-image">
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button class="secondary-button">查看全部</button>
+                    </div>
+                </div>
+
+                <div class="sidebar-card">
+                    <h3 class="sidebar-title">統計分析</h3>
+                    <div class="stats-list">
+                        <div class="stats-item">
+                            <div class="stats-label">本月閱讀量</div>
+                            <div class="stats-value">12,450</div>
+                        </div>
+                        <div class="stats-item">
+                            <div class="stats-label">本月新增關注</div>
+                            <div class="stats-value">+245</div>
+                        </div>
+                        <div class="stats-item">
+                            <div class="stats-label">最受歡迎文章</div>
+                            <div class="stats-value">AJ1 鑑定指南</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 發布文章彈窗 -->
+    <div class="modal-overlay" id="writeModal">
+        <div class="modal-container">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <div class="modal-header">
+                <h3 class="modal-title">發布新文章</h3>
+            </div>
+            <div class="modal-body">
+                <div class="editor-container">
+                    <input type="text" class="editor-title" placeholder="輸入標題..." id="articleTitle">
+                    <div class="editor-toolbar">
+                        <button class="toolbar-button" title="粗體"><strong>B</strong></button>
+                        <button class="toolbar-button" title="斜體"><em>I</em></button>
+                        <button class="toolbar-button" title="底線"><u>U</u></button>
+                        <button class="toolbar-button" title="插入圖片">IMG</button>
+                        <button class="toolbar-button" title="插入連結">LINK</button>
+                    </div>
+                    <textarea class="editor-content" placeholder="開始撰寫您的文章..." id="articleContent"></textarea>
+                </div>
+                <div class="tag-input-container">
+                    <input type="text" class="tag-input" placeholder="添加標籤 (按 Enter 確認)" id="tagInput">
+                    <div class="tag-list" id="tagList">
+                        <!-- 標籤將在這裡顯示 -->
+                    </div>
+                </div>
+                <div class="product-link-container">
+                    <h4>關聯產品</h4>
+                    <div class="product-search">
+                        <input type="text" class="tag-input" placeholder="搜尋要關聯的產品...">
+                        <div class="product-card">
+                            <img src="https://picsum.photos/200/300?random=1" alt="關聯商品" class="product-image">
+                            <div class="product-details">
+                                <div class="product-title">Air Jordan 1 High OG "Chicago Reimagined"</div>
+                                <div class="product-price">$450 USD</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="secondary-button" id="saveAsDraft">儲存為草稿</button>
+                <button class="primary-button green" id="publishArticle">發布文章</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 文章資料
+        const articles = [
+            {
+                id: 1,
+                title: "Nike Dunk Low vs. Air Jordan 1 Low：入門級球鞋大對決",
+                excerpt: "想入手你的第一雙球鞋？Nike Dunk Low 與 Air Jordan 1 Low 都是不錯的選擇。本文比較兩款經典鞋型的舒適度、耐用性、價格和轉售價值，幫助你做出最適合的選擇。",
+                author: {
+                    name: "Michael Chen",
+                    avatar: "https://picsum.photos/200/300?random=1"
+                },
+                date: "2023-10-15",
+                image: "https://picsum.photos/200/300?random=1",
+                tags: ["Nike Dunk", "Air Jordan", "球鞋比較", "入門指南"],
+                likes: 342,
+                comments: 56,
+                shares: 28
+            },
+            {
+                id: 2,
+                title: "2023 秋季最值得期待的 5 款聯名球鞋",
+                excerpt: "秋季將有多款重磅聯名球鞋發售，從 Travis Scott 新作到 Supreme 聯名系列，這些限量款式預計將引起市場高度關注。本文為你整理了即將發售的重要資訊和市場預測。",
+                author: {
+                    name: "Sarah Wong",
+                    avatar: "https://picsum.photos/200/300?random=1"
+                },
+                date: "2023-09-28",
+                image: "https://picsum.photos/200/300?random=1",
+                tags: ["聯名系列", "Travis Scott", "Supreme", "發售預告"],
+                likes: 289,
+                comments: 43,
+                shares: 76
+            },
+            {
+                id: 3,
+                title: "如何辨別 Air Jordan 4 \"Red Thunder\" 真偽？專家教你 5 個細節",
+                excerpt: "隨著 Air Jordan 4 \"Red Thunder\" 的熱度持續上升，市場上的仿冒品也逐漸增多。本文由鑑定專家分享辨別真偽的 5 個關鍵細節，包括鞋盒標籤、接縫、材質和特殊標記。",
+                author: {
+                    name: "Jack Liu",
+                    avatar: "https://picsum.photos/200/300?random=1"
+                },
+                date: "2023-10-02",
+                image: "https://picsum.photos/200/300?random=1",
+                tags: ["Air Jordan 4", "真假鑑定", "Red Thunder", "球鞋知識"],
+                likes: 561,
+                comments: 132,
+                shares: 215
+            },
+            {
+                id: 4,
+                title: "球鞋投資入門：新手必看的市場趨勢分析",
+                excerpt: "球鞋不只是穿著的配件，更是有潛力的投資標的。本文分析當前球鞋轉售市場的關鍵趨勢，並提供新手投資者應該關注的品牌、系列和注意事項，幫助你在球鞋投資領域做出明智決策。",
+                author: {
+                    name: "Emily Zhang",
+                    avatar: "https://picsum.photos/200/300?random=1"
+                },
+                date: "2023-09-20",
+                image: "https://picsum.photos/200/300?random=1",
+                tags: ["球鞋投資", "市場分析", "轉售市場", "投資指南"],
+                likes: 426,
+                comments: 78,
+                shares: 134
+            },
+            {
+                id: 5,
+                title: "我的球鞋收藏之旅：從第一雙 Air Force 1 開始",
+                excerpt: "每個球鞋愛好者都有自己的收藏故事。本文分享我從第一雙 Nike Air Force 1 開始的球鞋收藏之旅，包括難忘的排隊經歷、值得紀念的限量款，以及這些年來球鞋文化的變遷。",
+                author: {
+                    name: "Tom Jackson",
+                    avatar: "https://picsum.photos/200/300?random=1"
+                },
+                date: "2023-10-10",
+                image: "https://picsum.photos/200/300?random=1",
+                tags: ["球鞋收藏", "Air Force 1", "球鞋文化", "個人故事"],
+                likes: 317,
+                comments: 65,
+                shares: 42
+            }
+        ];
+
+        // 關注頁面文章
+        const followingArticles = [
+            {
+                id: 6,
+                title: "Nike SB Dunk Low \"Panda\" 配色全面評測",
+                excerpt: "經典黑白配色的 Nike SB Dunk Low \"Panda\" 近期備受關注。本文從材質、腳感、日常穿搭等角度進行評測，並分析這款配色在市場上的定位與未來走勢。",
+                author: {
+                    name: "Sarah Wong",
+                    avatar: "https://picsum.photos/200/300?random=1"
+                },
+                date: "2023-10-12",
+                image: "https://picsum.photos/200/300?random=1",
+                tags: ["Nike SB Dunk", "Panda", "球鞋評測", "配色分析"],
+                likes: 256,
+                comments: 48,
+                shares: 31
+            },
+            {
+                id: 7,
+                title: "街頭與奢華的結合：Louis Vuitton x Nike Air Force 1 設計解析",
+                excerpt: "Virgil Abloh 設計的 Louis Vuitton x Nike Air Force 1 是街頭文化與奢侈品牌結合的代表作。本文深入解析這款聯名的設計理念、創新元素和文化意義。",
+                author: {
+                    name: "Michael Chen",
+                    avatar: "https://picsum.photos/200/300?random=1"
+                },
+                date: "2023-09-25",
+                image: "https://picsum.photos/200/300?random=1",
+                tags: ["Louis Vuitton", "Air Force 1", "Virgil Abloh", "聯名解析"],
+                likes: 487,
+                comments: 92,
+                shares: 156
+            }
+        ];
+
+        // 個人專欄文章
+        const personalArticles = [
+            {
+                id: 8,
+                title: "我的 Air Jordan 1 收藏系列完整展示",
+                excerpt: "作為一名 AJ1 忠實粉絲，我收集了超過 25 款不同配色的 Air Jordan 1。本文展示我的完整收藏，並分享每款配色背後的故事和入手經歷。",
+                author: {
+                    name: "你的名字",
+                    avatar: "https://picsum.photos/200/300?random=1"
+                },
+                date: "2023-10-05",
+                image: "https://picsum.photos/200/300?random=1",
+                tags: ["球鞋收藏", "Air Jordan 1", "配色分享", "收藏展示"],
+                likes: 215,
+                comments: 42,
+                shares: 23
+            },
+            {
+                id: 9,
+                title: "球鞋保養指南：如何讓你的收藏保持最佳狀態",
+                excerpt: "正確的保養可以延長球鞋的壽命並維持其價值。本文分享專業的球鞋清潔、存放和防污技巧，確保你的珍貴收藏始終保持最佳狀態。",
+                author: {
+                    name: "你的名字",
+                    avatar: "https://picsum.photos/200/300?random=1"
+                },
+                date: "2023-09-18",
+                image: "https://picsum.photos/200/300?random=1",
+                tags: ["球鞋保養", "清潔技巧", "收藏維護", "實用指南"],
+                likes: 183,
+                comments: 36,
+                shares: 52
+            }
+        ];
+
+        // 我關注的專家
+        const followingExperts = [
+            {
+                name: "Sarah Wong",
+                title: "鑑定專家",
+                avatar: "https://picsum.photos/200/300?random=1",
+                following: true
+            },
+            {
+                name: "Michael Chen",
+                title: "球鞋市場分析師",
+                avatar: "https://picsum.photos/200/300?random=1",
+                following: true
+            },
+            {
+                name: "Lisa Johnson",
+                title: "時尚編輯",
+                avatar: "https://picsum.photos/200/300?random=1",
+                following: true
+            }
+        ];
+
+        // 推薦關注的專家
+        const recommendedExperts = [
+            {
+                name: "David Kim",
+                title: "限量球鞋收藏家",
+                avatar: "https://picsum.photos/200/300?random=1",
+                following: false
+            },
+            {
+                name: "Rachel Lee",
+                title: "街頭文化專家",
+                avatar: "https://picsum.photos/200/300?random=1",
+                following: false
+            }
+        ];
+
+        // 渲染文章列表
+        function renderArticles(containerID, articleData) {
+            const container = document.getElementById(containerID);
+            let articlesHTML = '';
+
+            articleData.forEach(article => {
+                articlesHTML += `
+                <div class="article-card">
+                    <img src="${article.image}" alt="${article.title}" class="article-image">
+                    <div class="article-content">
+                        <div class="article-meta">
+                            <img src="${article.author.avatar}" alt="${article.author.name}" class="author-avatar">
+                            <span>${article.author.name} · ${article.date}</span>
+                        </div>
+                        <h3 class="article-title">${article.title}</h3>
+                        <p class="article-excerpt">${article.excerpt}</p>
+                        <div class="article-tags">
+                            ${article.tags.map(tag => `<span class="article-tag">${tag}</span>`).join('')}
+                        </div>
+                        <div class="article-actions">
+                            <button class="action-button">
+                                <span>👍</span> ${article.likes}
+                            </button>
+                            <button class="action-button">
+                                <span>💬</span> ${article.comments}
+                            </button>
+                            <button class="action-button">
+                                <span>🔗</span> ${article.shares}
+                            </button>
+                            <button class="action-button">
+                                <span>🔖</span> 收藏
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                `;
+            });
+
+            container.innerHTML = articlesHTML;
+        }
+
+        // 渲染專家列表
+        function renderExperts(containerID, expertData) {
+            const container = document.getElementById(containerID);
+            let expertsHTML = '';
+
+            expertData.forEach(expert => {
+                expertsHTML += `
+                <div class="expert-item">
+                    <img src="${expert.avatar}" alt="${expert.name}" class="expert-avatar">
+                    <div class="expert-info">
+                        <div class="expert-name">${expert.name}</div>
+                        <div class="expert-title">${expert.title}</div>
+                    </div>
+                    <button class="follow-button ${expert.following ? 'following' : ''}">${expert.following ? '已關注' : '關注'}</button>
+                </div>
+                `;
+            });
+
+            container.innerHTML = expertsHTML;
+        }
+
+        // 初始化頁面
+        document.addEventListener('DOMContentLoaded', function () {
+            // 渲染文章列表
+            renderArticles('discover-articles', articles);
+            renderArticles('following-articles', followingArticles);
+            renderArticles('personal-articles', personalArticles);
+
+            // 渲染專家列表
+            renderExperts('following-experts', followingExperts);
+            renderExperts('recommended-experts', recommendedExperts);
+
+            // 頁面導航切換
+            const navButtons = document.querySelectorAll('.nav-button[data-page]');
+            navButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    const targetPage = this.getAttribute('data-page');
+                    document.querySelectorAll('.page-content').forEach(page => {
+                        page.style.display = 'none';
+                    });
+                    document.getElementById(targetPage + '-page').style.display = 'flex';
+
+                    // 更新活動按鈕樣式
+                    navButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // 添加功能到頁籤
+            const tabs = document.querySelectorAll('.feed-tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function () {
+                    const parent = this.parentElement;
+                    parent.querySelectorAll('.feed-tab').forEach(t => {
+                        t.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            });
+
+            // 文章發布按鈕功能
+            const writeButton = document.getElementById('writeButton');
+            const writeModal = document.getElementById('writeModal');
+            const closeModal = document.getElementById('closeModal');
+            const publishButton = document.getElementById('publishArticle');
+            const draftButton = document.getElementById('saveAsDraft');
+
+            writeButton.addEventListener('click', function () {
+                writeModal.classList.add('active');
+            });
+
+            closeModal.addEventListener('click', function () {
+                writeModal.classList.remove('active');
+            });
+
+            publishButton.addEventListener('click', function () {
+                const title = document.getElementById('articleTitle').value;
+                const content = document.getElementById('articleContent').value;
+
+                if (title && content) {
+                    // 模擬發布文章
+                    alert('文章已成功發布！');
+                    writeModal.classList.remove('active');
+
+                    // 清空表單
+                    document.getElementById('articleTitle').value = '';
+                    document.getElementById('articleContent').value = '';
+                    document.getElementById('tagList').innerHTML = '';
+                } else {
+                    alert('請填寫標題和內容');
+                }
+            });
+
+            draftButton.addEventListener('click', function () {
+                const title = document.getElementById('articleTitle').value;
+                const content = document.getElementById('articleContent').value;
+
+                if (title || content) {
+                    // 模擬儲存草稿
+                    alert('文章已儲存為草稿！');
+                    writeModal.classList.remove('active');
+                } else {
+                    alert('請至少填寫標題或內容');
+                }
+            });
+
+            // 標籤輸入功能
+            const tagInput = document.getElementById('tagInput');
+            const tagList = document.getElementById('tagList');
+
+            tagInput.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+                    const tag = this.value.trim();
+
+                    if (tag) {
+                        const tagElement = document.createElement('div');
+                        tagElement.className = 'tag-item';
+                        tagElement.innerHTML = `
+                            ${tag}
+                            <button class="tag-remove">&times;</button>
+                        `;
+
+                        tagList.appendChild(tagElement);
+                        this.value = '';
+
+                        // 添加刪除標籤功能
+                        tagElement.querySelector('.tag-remove').addEventListener('click', function () {
+                            tagElement.remove();
+                        });
+                    }
+                }
+            });
+
+            // 關注按鈕功能
+            document.addEventListener('click', function (e) {
+                if (e.target.classList.contains('follow-button')) {
+                    if (e.target.classList.contains('following')) {
+                        e.target.classList.remove('following');
+                        e.target.textContent = '關注';
+                    } else {
+                        e.target.classList.add('following');
+                        e.target.textContent = '已關注';
+                    }
+                }
+            });
+
+            // 新文章通知功能
+            const newPostsAlert = document.getElementById('newPostsAlert');
+            setTimeout(() => {
+                newPostsAlert.style.display = 'block';
+            }, 5000);
+
+            newPostsAlert.addEventListener('click', function () {
+                this.style.display = 'none';
+                // 這裡可以添加加載新文章的邏輯
+            });
+        });/* filepath: c:\Users\user\Desktop\prototype\index.html */
+        /* 在現有的 script 標籤內，document.addEventListener('DOMContentLoaded', function ()... 內部添加 */
+
+        // 移動版菜單切換
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navButtonsContainer = document.querySelector('.nav-buttons');
+
+        mobileMenuToggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            navButtonsContainer.classList.toggle('active');
+        });
+
+        // 點擊菜單項後關閉菜單
+        document.querySelectorAll('.nav-button, #writeButton').forEach(button => {
+            button.addEventListener('click', function () {
+                if (window.innerWidth <= 600) {
+                    navButtonsContainer.classList.remove('active');
+                }
+            });
+        });
+
+        // 點擊頁面其他區域關閉菜單
+        document.addEventListener('click', function (event) {
+            if (window.innerWidth <= 600 && navButtonsContainer.classList.contains('active') &&
+                !event.target.closest('.nav-buttons') &&
+                event.target !== mobileMenuToggle) {
+                navButtonsContainer.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+
+</html>
