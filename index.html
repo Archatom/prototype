@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="img/logo.png" type="image/x-icon">
     <link rel="shortcut icon" href="img/logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
     <title>StockX 社群文章功能</title>
-    <style>
+    <!-- <style>
         :root {
             --stockx-green: #7bcf7b;
             --stockx-green-dark: #00CC00;
@@ -747,6 +749,468 @@
             font-weight: 600;
         }
 
+        /* 通知铃铛样式 */
+        .notification-bell {
+            position: relative;
+            margin-right: 5px;
+        }
+
+        .bell-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 8px;
+            border-radius: 50%;
+            transition: background-color 0.2s;
+        }
+
+        .bell-button:hover {
+            background-color: var(--stockx-light-gray);
+        }
+
+        .bell-button svg {
+            width: 24px;
+            height: 24px;
+            fill: var(--stockx-black);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--stockx-green);
+            color: var(--stockx-black);
+            font-size: 11px;
+            font-weight: bold;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+        }
+
+        /* 通知下拉框样式 */
+        .notification-dropdown {
+            position: absolute;
+            top: 100%;
+            right: -100px;
+            width: 320px;
+            background-color: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            border-radius: 8px;
+            z-index: 200;
+            overflow: hidden;
+            display: none;
+            margin-top: 10px;
+        }
+
+        .notification-dropdown.active {
+            display: block;
+        }
+
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--stockx-light-gray);
+        }
+
+        .notification-header h3 {
+            font-size: 16px;
+            margin: 0;
+        }
+
+        .mark-all-read {
+            background: none;
+            border: none;
+            color: var(--stockx-green);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .notification-list {
+            max-height: 320px;
+            overflow-y: auto;
+        }
+
+        .notification-item {
+            display: flex;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--stockx-light-gray);
+            gap: 12px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .notification-item:hover {
+            background-color: var(--stockx-light-gray);
+        }
+
+        .notification-item.unread {
+            background-color: rgba(123, 207, 123, 0.1);
+        }
+
+        .notification-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-content p {
+            margin: 0;
+            margin-bottom: 4px;
+        }
+
+        .notification-time {
+            font-size: 12px;
+            color: var(--stockx-dark-gray);
+        }
+
+        .notification-footer {
+            padding: 12px;
+            text-align: center;
+            border-top: 1px solid var(--stockx-light-gray);
+        }
+
+        .notification-footer a {
+            color: var(--stockx-black);
+            font-size: 14px;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* 將這些樣式添加到現有的 style 標籤中 */
+
+        /* 文章詳情模態窗口樣式 */
+        .article-modal {
+            max-width: 900px;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        .article-detail {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .article-header-image {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+        }
+
+        .article-detail-content {
+            padding: 30px;
+        }
+
+        .article-meta-large {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .author-avatar-large {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .author-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .author-name {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .article-date {
+            color: var(--stockx-dark-gray);
+            font-size: 14px;
+        }
+
+        .article-title-large {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .article-body {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .article-body p {
+            margin-bottom: 20px;
+        }
+
+        .article-tags-large {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .article-tag-large {
+            background-color: var(--stockx-light-gray);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .article-actions-large {
+            display: flex;
+            padding: 20px 0;
+            border-top: 1px solid var(--stockx-light-gray);
+            border-bottom: 1px solid var(--stockx-light-gray);
+            margin: 20px 0;
+            justify-content: space-around;
+        }
+
+        .action-button-large {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .action-button-large:hover {
+            background-color: var(--stockx-light-gray);
+        }
+
+        .action-button-large svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+
+        /* 相關商品區域 */
+        .related-products {
+            margin: 30px 0;
+        }
+
+        .related-products-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .related-products-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .related-product-card {
+            border: 1px solid var(--stockx-light-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+        }
+
+        .related-product-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .related-product-image {
+            width: 100%;
+            aspect-ratio: 1;
+            object-fit: cover;
+        }
+
+        .related-product-info {
+            padding: 12px;
+        }
+
+        .related-product-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .related-product-price {
+            color: var(--stockx-green);
+            font-weight: bold;
+        }
+
+        /* 評論區域 */
+        .comments-section {
+            margin-top: 30px;
+        }
+
+        .comments-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .comment-form {
+            display: flex;
+            margin-bottom: 30px;
+        }
+
+        .comment-input {
+            flex: 1;
+            border: 1px solid var(--stockx-light-gray);
+            border-radius: 20px;
+            padding: 12px 20px;
+            font-size: 14px;
+            resize: none;
+        }
+
+        .comment-submit {
+            margin-left: 10px;
+            background-color: var(--stockx-green);
+            color: var(--stockx-black);
+            border: none;
+            border-radius: 20px;
+            padding: 0 20px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .comment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .comment-item {
+            display: flex;
+            gap: 15px;
+        }
+
+        .comment-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+
+        .comment-content {
+            flex: 1;
+            background-color: var(--stockx-light-gray);
+            padding: 15px;
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .comment-content::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 15px;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-right: 8px solid var(--stockx-light-gray);
+        }
+
+        .comment-author {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .comment-text {
+            margin-bottom: 8px;
+        }
+
+        .comment-date {
+            font-size: 12px;
+            color: var(--stockx-dark-gray);
+        }
+
+        .comment-actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 8px;
+            font-size: 13px;
+        }
+
+        .comment-action {
+            cursor: pointer;
+            color: var(--stockx-dark-gray);
+        }
+
+        .comment-action:hover {
+            color: var(--stockx-black);
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .article-header-image {
+                height: 250px;
+            }
+
+            .article-title-large {
+                font-size: 22px;
+            }
+
+            .related-products-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .article-detail-content {
+                padding: 20px;
+            }
+
+            .related-products-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comment-form {
+                flex-direction: column;
+            }
+
+            .comment-submit {
+                margin-left: 0;
+                margin-top: 10px;
+            }
+        }
+
+        /* 在媒体查询中添加响应式设计 */
+        @media (max-width: 600px) {
+            .notification-dropdown {
+                width: 100%;
+                right: 0;
+                margin-top: 0;
+                position: fixed;
+                top: auto;
+                bottom: 0;
+                border-radius: 8px 8px 0 0;
+                max-height: 80vh;
+            }
+
+            .notification-list {
+                max-height: 60vh;
+            }
+        }
+
         /* 響應式設計 */
         /* @media (max-width: 900px) {
             .main-container {
@@ -968,7 +1432,7 @@
                 text-align: center;
             }
         }
-    </style>
+    </style> -->
 </head>
 
 <body>
@@ -990,6 +1454,48 @@
             <button class="nav-button" data-page="discover">發現</button>
             <button class="nav-button" data-page="following">關注</button>
             <button class="nav-button" data-page="personal">個人專欄</button>
+            <div class="notification-bell">
+                <button class="bell-button">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.64 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2zm-2 1H8v-6c0-2.48 1.51-4.5 4-4.5s4 2.02 4 4.5v6z">
+                        </path>
+                    </svg>
+                    <span class="notification-badge">3</span>
+                </button>
+                <div class="notification-dropdown">
+                    <div class="notification-header">
+                        <h3>通知</h3>
+                        <button class="mark-all-read">全部標為已讀</button>
+                    </div>
+                    <div class="notification-list">
+                        <div class="notification-item unread">
+                            <img src="img/people2.jpg" alt="通知頭像" class="notification-avatar">
+                            <div class="notification-content">
+                                <p><strong>Sarah Wong</strong> 回覆了你的文章</p>
+                                <span class="notification-time">5 分鐘前</span>
+                            </div>
+                        </div>
+                        <div class="notification-item unread">
+                            <img src="img/people1.jpg" alt="通知頭像" class="notification-avatar">
+                            <div class="notification-content">
+                                <p><strong>Michael Chen</strong> 讚了你的文章</p>
+                                <span class="notification-time">1 小時前</span>
+                            </div>
+                        </div>
+                        <div class="notification-item unread">
+                            <img src="img/people3.jpg" alt="通知頭像" class="notification-avatar">
+                            <div class="notification-content">
+                                <p><strong>Tom Jackson</strong> 開始關注你</p>
+                                <span class="notification-time">昨天</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notification-footer">
+                        <a href="#">查看所有通知</a>
+                    </div>
+                </div>
+            </div>
             <button id="writeButton" class="primary-button green">發布文章</button>
         </div>
     </header>
@@ -1001,7 +1507,7 @@
             <div class="content-feed">
                 <div class="feed-header">
                     <h2 class="feed-title">潮流社區</h2>
-                    <button class="secondary-button">篩選</button>
+                    <!-- <button class="secondary-button">篩選</button> -->
                 </div>
 
                 <div class="feed-tabs">
@@ -1082,27 +1588,29 @@
                 </div>
 
                 <!-- 熱門商品 -->
-                <div class="sidebar-card">
-                    <h3 class="sidebar-title">熱門商品</h3>
-                    <div class="expert-list">
+                <div class="hot-products-section">
+                    <h2>熱門商品</h2>
+                    <div class="product-list">
                         <div class="product-card">
-                            <img src="img/1.jpg" alt="熱門商品" class="product-image">
-                            <div class="product-details">
-                                <div class="product-title">Nike SB Dunk Low "Travis Scott"</div>
+                            <img src="img/1.jpg" alt="Nike SB Dunk Low" class="product-image">
+                            <div class="product-info">
+                                <div class="product-name">Nike SB Dunk Low "Travis Scott"</div>
                                 <div class="product-price">$1,250 USD</div>
                             </div>
                         </div>
+
                         <div class="product-card">
-                            <img src="img/2.jpg" alt="熱門商品" class="product-image">
-                            <div class="product-details">
-                                <div class="product-title">Air Jordan 4 "Red Thunder"</div>
+                            <img src="img/2.jpg" alt="Air Jordan" class="product-image">
+                            <div class="product-info">
+                                <div class="product-name">Air Jordan "Red Thunder"</div>
                                 <div class="product-price">$480 USD</div>
                             </div>
                         </div>
+
                         <div class="product-card">
-                            <img src="img/3.jpg" alt="熱門商品" class="product-image">
-                            <div class="product-details">
-                                <div class="product-title">Adidas Yeezy Slide "Onyx"</div>
+                            <img src="img/3.jpg" alt="Adidas Yeezy" class="product-image">
+                            <div class="product-info">
+                                <div class="product-name">Adidas Yeezy Slide "Onyx"</div>
                                 <div class="product-price">$160 USD</div>
                             </div>
                         </div>
@@ -1154,7 +1662,7 @@
                     <div class="profile-info">
                         <img src="img/people7.jpg" alt="用戶頭像" class="profile-avatar">
                         <div class="profile-details">
-                            <h2 class="profile-name">你的名字</h2>
+                            <h2 class="profile-name">Johnson</h2>
                             <p class="profile-bio">分享我的球鞋收藏與穿搭心得</p>
                             <div class="profile-stats">
                                 <div class="stat-item">
@@ -1282,7 +1790,17 @@
         </div>
     </div>
 
-    <script>
+    <!-- 添加到 body 底部，確保有這個模態窗口結構 -->
+    <div id="articleModal" class="modal-overlay article-modal-overlay">
+        <div class="modal-container article-modal">
+            <button id="closeArticleModal" class="modal-close">&times;</button>
+            <div id="articleDetail" class="article-detail">
+                <!-- 動態插入文章內容 -->
+            </div>
+        </div>
+    </div>
+
+    <!-- <script>
         // 文章資料
         const articles = [
             {
@@ -1862,8 +2380,60 @@
         // renderArticles('discover-articles', articles);
         // renderArticles('following-articles', followingArticles);
         // renderArticles('personal-articles', personalArticles);
+        // 通知铃铛功能
+        const bellButton = document.querySelector('.bell-button');
+        const notificationDropdown = document.querySelector('.notification-dropdown');
+        const markAllReadButton = document.querySelector('.mark-all-read');
+        const notificationItems = document.querySelectorAll('.notification-item');
+        const notificationBadge = document.querySelector('.notification-badge');
 
-    </script>
+        // 铃铛点击事件
+        bellButton.addEventListener('click', function (e) {
+            e.stopPropagation();
+            notificationDropdown.classList.toggle('active');
+        });
+
+        // 标记所有为已读
+        markAllReadButton.addEventListener('click', function (e) {
+            e.stopPropagation();
+            document.querySelectorAll('.notification-item').forEach(item => {
+                item.classList.remove('unread');
+            });
+            // 隐藏通知徽章
+            notificationBadge.style.display = 'none';
+        });
+
+        // 点击单个通知
+        notificationItems.forEach(item => {
+            item.addEventListener('click', function () {
+                this.classList.remove('unread');
+                // 更新未读数量
+                updateNotificationBadge();
+            });
+        });
+
+        // 点击页面其他部分关闭通知下拉框
+        document.addEventListener('click', function (e) {
+            if (!e.target.closest('.notification-bell')) {
+                notificationDropdown.classList.remove('active');
+            }
+        });
+
+        // 更新通知徽章
+        function updateNotificationBadge() {
+            const unreadCount = document.querySelectorAll('.notification-item.unread').length;
+            if (unreadCount > 0) {
+                notificationBadge.textContent = unreadCount;
+                notificationBadge.style.display = 'flex';
+            } else {
+                notificationBadge.style.display = 'none';
+            }
+        }
+
+        // 初始化通知徽章
+        updateNotificationBadge();
+    </script> -->
+
 </body>
 
 </html>
