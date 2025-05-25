@@ -2035,4 +2035,16 @@
         .product-search .product-price {
             font-size: 16px;
         }
+
+
+    }
+
+    /* 超小螢幕進一步調整 */
+    @media (max-width: 480px) {
+        .feed-tab {
+            padding: 6px 10px;
+            /* 進一步減少內邊距 */
+            font-size: 12px;
+            /* 更小的字體 */
+        }
     }
