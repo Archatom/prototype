@@ -2035,16 +2035,28 @@
         .product-search .product-price {
             font-size: 16px;
         }
-
-
     }
 
-    /* 超小螢幕進一步調整 */
+    /* Feed Tabs 480px以下螢幕字體調整 */
     @media (max-width: 480px) {
         .feed-tab {
-            padding: 6px 10px;
-            /* 進一步減少內邊距 */
+            font-size: 14px;
+            /* 從預設的15px減小到13px */
+            padding: 8px 16px;
+            /* 稍微調整內邊距 */
+            /* white-space: nowrap; */
+            /* 防止文字換行 */
+        }
+    }
+
+    /* Feed Tabs 380px以下螢幕字體調整 */
+    @media (max-width: 380px) {
+        .feed-tab {
             font-size: 12px;
-            /* 更小的字體 */
+            /* 從預設的15px減小到13px */
+            padding: 8px 16px;
+            /* 稍微調整內邊距 */
+            /* white-space: nowrap; */
+            /* 防止文字換行 */
         }
     }
