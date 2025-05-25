@@ -1524,6 +1524,7 @@
     }
 
     /* 響應式設計調整 */
+
     @media (max-width: 768px) {
         .modal-overlay.article-modal-overlay {
             padding: 10px;
@@ -1711,6 +1712,60 @@
         .collection-grid {
             grid-template-columns: repeat(2, 1fr);
         }
+
+        /* 強制熱門商品為垂直佈局 */
+        .hot-products-section .product-list {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 15px !important;
+        }
+
+        .hot-products-section .product-card {
+            display: flex !important;
+            flex-direction: column !important;
+            background-color: #f9f9f9 !important;
+            border-radius: 8px !important;
+            overflow: hidden !important;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+            width: 100% !important;
+        }
+
+        .hot-products-section .product-image {
+            width: 100% !important;
+            height: 150px !important;
+            object-fit: cover !important;
+            background-color: #fff !important;
+            padding: 10px !important;
+            margin: 0 !important;
+        }
+
+        .hot-products-section .product-info {
+            padding: 12px 15px !important;
+            background-color: #f9f9f9 !important;
+            flex-direction: column !important;
+            justify-content: flex-start !important;
+            flex: none !important;
+        }
+
+        .hot-products-section .product-name {
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            margin-bottom: 6px !important;
+            color: #000 !important;
+        }
+
+        .hot-products-section .product-price {
+            color: #5cb85c !important;
+            font-weight: 700 !important;
+            font-size: 16px !important;
+        }
+
+        /* 確保沒有橫向滾動 */
+        .hot-products-section {
+            overflow-x: hidden !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
     }
 
     /* 手機與小屏幕 */
@@ -1790,6 +1845,60 @@
             width: 100%;
             margin-bottom: 8px;
         }
+
+        /* 強制熱門商品為垂直佈局 */
+        .hot-products-section .product-list {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 15px !important;
+        }
+
+        .hot-products-section .product-card {
+            display: flex !important;
+            flex-direction: column !important;
+            background-color: #f9f9f9 !important;
+            border-radius: 8px !important;
+            overflow: hidden !important;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+            width: 100% !important;
+        }
+
+        .hot-products-section .product-image {
+            width: 100% !important;
+            height: 150px !important;
+            object-fit: cover !important;
+            background-color: #fff !important;
+            padding: 10px !important;
+            margin: 0 !important;
+        }
+
+        .hot-products-section .product-info {
+            padding: 12px 15px !important;
+            background-color: #f9f9f9 !important;
+            flex-direction: column !important;
+            justify-content: flex-start !important;
+            flex: none !important;
+        }
+
+        .hot-products-section .product-name {
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            margin-bottom: 6px !important;
+            color: #000 !important;
+        }
+
+        .hot-products-section .product-price {
+            color: #5cb85c !important;
+            font-weight: 700 !important;
+            font-size: 16px !important;
+        }
+
+        /* 確保沒有橫向滾動 */
+        .hot-products-section {
+            overflow-x: hidden !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
     }
 
 
@@ -1843,5 +1952,87 @@
             margin: 10px 20px;
             width: calc(100% - 40px);
             text-align: center;
+        }
+
+        /* 強制熱門商品為垂直佈局 */
+        .hot-products-section .product-list {
+            display: flex !important;
+            flex-direction: column !important;
+            gap: 15px !important;
+        }
+
+        .hot-products-section .product-card {
+            display: flex !important;
+            flex-direction: column !important;
+            background-color: #f9f9f9 !important;
+            border-radius: 8px !important;
+            overflow: hidden !important;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1) !important;
+            width: 100% !important;
+        }
+
+        .hot-products-section .product-image {
+            width: 100% !important;
+            height: 150px !important;
+            object-fit: cover !important;
+            background-color: #fff !important;
+            padding: 10px !important;
+            margin: 0 !important;
+        }
+
+        .hot-products-section .product-info {
+            padding: 12px 15px !important;
+            background-color: #f9f9f9 !important;
+            flex-direction: column !important;
+            justify-content: flex-start !important;
+            flex: none !important;
+        }
+
+        .hot-products-section .product-name {
+            font-size: 14px !important;
+            font-weight: 600 !important;
+            margin-bottom: 6px !important;
+            color: #000 !important;
+        }
+
+        .hot-products-section .product-price {
+            color: #5cb85c !important;
+            font-weight: 700 !important;
+            font-size: 16px !important;
+        }
+
+        /* 確保沒有橫向滾動 */
+        .hot-products-section {
+            overflow-x: hidden !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        .product-search .product-card {
+            display: flex !important;
+            flex-direction: column !important;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .product-search .product-image {
+            width: 100% !important;
+            height: 120px !important;
+            margin-right: 0 !important;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+
+        .product-search .product-details {
+            text-align: center;
+        }
+
+        .product-search .product-title {
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+        .product-search .product-price {
+            font-size: 16px;
         }
     }
