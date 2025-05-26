@@ -2035,6 +2035,51 @@
         .product-search .product-price {
             font-size: 16px;
         }
+
+        /* 修正通知下拉框位置 */
+        .notification-dropdown {
+            position: fixed;
+            top: 60px;
+            right: 10px;
+            left: auto;
+            width: 280px;
+            max-width: calc(100vw - 20px);
+        }
+
+        /* 調整標題區域樣式 */
+        .notification-header {
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            /* 添加間隔 */
+        }
+
+        /* 調整標題和按鈕樣式 */
+        .notification-header h3 {
+            font-size: 14px;
+            white-space: nowrap;
+            margin: 0;
+        }
+
+        /* 優化"全部標為已讀"按鈕樣式 */
+        .mark-all-read {
+            background: none;
+            border: none;
+            color: var(--stockx-green);
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            white-space: nowrap;
+            padding: 0;
+            text-align: right;
+        }
+
+        .mark-all-read:active {
+            transform: scale(0.97);
+            /* 移除背景樣式，保持靠右對齊 */
+        }
     }
 
     /* Feed Tabs 480px以下螢幕字體調整 */
@@ -2058,5 +2103,18 @@
             /* 稍微調整內邊距 */
             /* white-space: nowrap; */
             /* 防止文字換行 */
+        }
+
+        .notification-dropdown {
+            width: 250px;
+            right: 5px;
+        }
+
+        .notification-header h3 {
+            font-size: 13px;
+        }
+
+        .mark-all-read {
+            font-size: 11px;
         }
     }
