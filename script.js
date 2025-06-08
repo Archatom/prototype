@@ -113,35 +113,38 @@ const followingArticles = [
 
 // 個人專欄文章
 const personalArticles = [
+    // 新增草稿文章，互動數據為0
     {
-        id: 8,
-        title: "我的 Air Jordan 1 收藏系列完整展示",
-        excerpt: "作為一名 AJ1 忠實粉絲，我收集了超過 25 款不同配色的 Air Jordan 1。本文展示我的完整收藏，並分享每款配色背後的故事和入手經歷。",
+        id: 10,
+        title: "2024年最值得期待的球鞋發售清單",
+        excerpt: "整理了2024年即將發售的重磅球鞋，包括各品牌的限量聯名系列和經典復刻款式。本文將持續更新最新的發售資訊和市場預測。",
         author: {
             name: "你的名字",
             avatar: "img/people7.jpg"
         },
-        date: "2023-10-05",
-        image: "img/3.jpg",
-        tags: ["球鞋收藏", "Air Jordan 1", "配色分享", "收藏展示"],
-        likes: 215,
-        comments: 42,
-        shares: 23
+        date: "2023-10-15",
+        image: "img/5.jpg",
+        tags: ["發售預告", "2024球鞋", "限量聯名", "市場預測"],
+        likes: 0,      // 草稿文章互動數據為0
+        comments: 0,   // 草稿文章互動數據為0
+        shares: 0,     // 草稿文章互動數據為0
+        category: "draft" // 草稿文章
     },
     {
-        id: 9,
-        title: "球鞋保養指南：如何讓你的收藏保持最佳狀態",
-        excerpt: "正確的保養可以延長球鞋的壽命並維持其價值。本文分享專業的球鞋清潔、存放和防污技巧，確保你的珍貴收藏始終保持最佳狀態。",
+        id: 11,
+        title: "從配色學角度分析經典球鞋設計",
+        excerpt: "探討球鞋設計中的配色理論，分析為什麼某些配色組合能成為經典，以及配色對球鞋市場價值的影響。尚未完成的深度分析文章。",
         author: {
             name: "你的名字",
             avatar: "img/people7.jpg"
         },
-        date: "2023-09-18",
-        image: "img/4.jpg",
-        tags: ["球鞋保養", "清潔技巧", "收藏維護", "實用指南"],
-        likes: 183,
-        comments: 36,
-        shares: 52
+        date: "2023-10-12",
+        image: "img/1.jpg",
+        tags: ["設計分析", "配色理論", "球鞋美學", "市場研究"],
+        likes: 0,      // 草稿文章互動數據為0
+        comments: 0,   // 草稿文章互動數據為0
+        shares: 0,     // 草稿文章互動數據為0
+        category: "draft" // 草稿文章
     }
 ];
 
