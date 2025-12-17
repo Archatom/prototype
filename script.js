@@ -1,190 +1,174 @@
-// 文章資料
-const articles = [
-    {
-        id: 1,
-        title: "Nike Dunk Low vs. Air Jordan 1 Low：入門級球鞋大對決",
-        excerpt: "想入手你的第一雙球鞋？Nike Dunk Low 與 Air Jordan 1 Low 都是不錯的選擇。本文比較兩款經典鞋型的舒適度、耐用性、價格和轉售價值，幫助你做出最適合的選擇。",
-        author: {
-            name: "Michael Chen",
-            avatar: "img/people1.jpg"
-        },
-        date: "2023-10-15",
-        image: "img/1.jpg",
-        tags: ["Nike Dunk", "Air Jordan", "球鞋比較", "入門指南"],
-        likes: 342,
-        comments: 56,
-        shares: 28
-    },
-    {
-        id: 2,
-        title: "2023 秋季最值得期待的 5 款聯名球鞋",
-        excerpt: "秋季將有多款重磅聯名球鞋發售，從 Travis Scott 新作到 Supreme 聯名系列，這些限量款式預計將引起市場高度關注。本文為你整理了即將發售的重要資訊和市場預測。",
-        author: {
-            name: "Sarah Wong",
-            avatar: "img/people2.jpg"
-        },
-        date: "2023-09-28",
-        image: "img/2.jpg",
-        tags: ["聯名系列", "Travis Scott", "Supreme", "發售預告"],
-        likes: 289,
-        comments: 43,
-        shares: 76
-    },
-    {
-        id: 3,
-        title: "如何辨別 Air Jordan 4 \"Red Thunder\" 真偽？專家教你 5 個細節",
-        excerpt: "隨著 Air Jordan 4 \"Red Thunder\" 的熱度持續上升，市場上的仿冒品也逐漸增多。本文由鑑定專家分享辨別真偽的 5 個關鍵細節，包括鞋盒標籤、接縫、材質和特殊標記。",
-        author: {
-            name: "Jack Liu",
-            avatar: "img/people3.jpg"
-        },
-        date: "2023-10-02",
-        image: "img/3.jpg",
-        tags: ["Air Jordan 4", "真假鑑定", "Red Thunder", "球鞋知識"],
-        likes: 561,
-        comments: 132,
-        shares: 215
-    },
-    {
-        id: 4,
-        title: "球鞋投資入門：新手必看的市場趨勢分析",
-        excerpt: "球鞋不只是穿著的配件，更是有潛力的投資標的。本文分析當前球鞋轉售市場的關鍵趨勢，並提供新手投資者應該關注的品牌、系列和注意事項，幫助你在球鞋投資領域做出明智決策。",
-        author: {
-            name: "Emily Zhang",
-            avatar: "img/people4.webp"
-        },
-        date: "2023-09-20",
-        image: "img/4.jpg",
-        tags: ["球鞋投資", "市場分析", "轉售市場", "投資指南"],
-        likes: 426,
-        comments: 78,
-        shares: 134
-    },
-    {
-        id: 5,
-        title: "我的球鞋收藏之旅：從第一雙 Air Force 1 開始",
-        excerpt: "每個球鞋愛好者都有自己的收藏故事。本文分享我從第一雙 Nike Air Force 1 開始的球鞋收藏之旅，包括難忘的排隊經歷、值得紀念的限量款，以及這些年來球鞋文化的變遷。",
-        author: {
-            name: "Tom Jackson",
-            avatar: "img/people5.jpg"
-        },
-        date: "2023-10-10",
-        image: "img/5.jpg",
-        tags: ["球鞋收藏", "Air Force 1", "球鞋文化", "個人故事"],
-        likes: 317,
-        comments: 65,
-        shares: 42
-    }
-];
+// ==================== API 資料載入系統 ====================
 
-// 關注頁面文章
-const followingArticles = [
-    {
-        id: 6,
-        title: "Nike SB Dunk Low \"Panda\" 配色全面評測",
-        excerpt: "經典黑白配色的 Nike SB Dunk Low \"Panda\" 近期備受關注。本文從材質、腳感、日常穿搭等角度進行評測，並分析這款配色在市場上的定位與未來走勢。",
-        author: {
-            name: "Sarah Wong",
-            avatar: "img/people2.jpg"
-        },
-        date: "2023-10-12",
-        image: "img/1.jpg",
-        tags: ["Nike SB Dunk", "Panda", "球鞋評測", "配色分析"],
-        likes: 256,
-        comments: 48,
-        shares: 31
-    },
-    {
-        id: 7,
-        title: "街頭與奢華的結合：Louis Vuitton x Nike Air Force 1 設計解析",
-        excerpt: "Virgil Abloh 設計的 Louis Vuitton x Nike Air Force 1 是街頭文化與奢侈品牌結合的代表作。本文深入解析這款聯名的設計理念、創新元素和文化意義。",
-        author: {
-            name: "Michael Chen",
-            avatar: "img/people1.jpg"
-        },
-        date: "2023-09-25",
-        image: "img/2.jpg",
-        tags: ["Louis Vuitton", "Air Force 1", "Virgil Abloh", "聯名解析"],
-        likes: 487,
-        comments: 92,
-        shares: 156
-    }
-];
+// 資料快取
+let cachedData = null;
+let articles = [];
+let followingArticles = [];
+let personalArticles = [];
+let followingExperts = [];
+let recommendedExperts = [];
 
-// 個人專欄文章
-const personalArticles = [
-    // 新增草稿文章，互動數據為0
-    {
-        id: 10,
-        title: "2024年最值得期待的球鞋發售清單",
-        excerpt: "整理了2024年即將發售的重磅球鞋，包括各品牌的限量聯名系列和經典復刻款式。本文將持續更新最新的發售資訊和市場預測。",
-        author: {
-            name: "你的名字",
-            avatar: "img/people7.jpg"
-        },
-        date: "2023-10-15",
-        image: "img/5.jpg",
-        tags: ["發售預告", "2024球鞋", "限量聯名", "市場預測"],
-        likes: 0,      // 草稿文章互動數據為0
-        comments: 0,   // 草稿文章互動數據為0
-        shares: 0,     // 草稿文章互動數據為0
-        category: "draft" // 草稿文章
-    },
-    {
-        id: 11,
-        title: "從配色學角度分析經典球鞋設計",
-        excerpt: "探討球鞋設計中的配色理論，分析為什麼某些配色組合能成為經典，以及配色對球鞋市場價值的影響。尚未完成的深度分析文章。",
-        author: {
-            name: "你的名字",
-            avatar: "img/people7.jpg"
-        },
-        date: "2023-10-12",
-        image: "img/1.jpg",
-        tags: ["設計分析", "配色理論", "球鞋美學", "市場研究"],
-        likes: 0,      // 草稿文章互動數據為0
-        comments: 0,   // 草稿文章互動數據為0
-        shares: 0,     // 草稿文章互動數據為0
-        category: "draft" // 草稿文章
+// 從 JSON 檔案載入資料
+async function loadDataFromJSON() {
+    if (cachedData) {
+        return cachedData;
     }
-];
 
-// 我關注的專家
-const followingExperts = [
-    {
-        name: "Sarah Wong",
-        title: "鑑定專家",
-        avatar: "img/people2.jpg",
-        following: true
-    },
-    {
-        name: "Michael Chen",
-        title: "球鞋市場分析師",
-        avatar: "img/people1.jpg",
-        following: true
-    },
-    {
-        name: "Lisa Johnson",
-        title: "時尚編輯",
-        avatar: "img/people4.webp",
-        following: true
-    }
-];
+    try {
+        const response = await fetch('./data/articles.json');
+        if (!response.ok) {
+            throw new Error('無法載入資料');
+        }
+        cachedData = await response.json();
 
-// 推薦關注的專家
-const recommendedExperts = [
-    {
-        name: "David Kim",
-        title: "限量球鞋收藏家",
-        avatar: "img/people5.jpg",
-        following: false
-    },
-    {
-        name: "Rachel Lee",
-        title: "街頭文化專家",
-        avatar: "img/people6.jpg",
-        following: false
+        // 將資料分配到全域變數
+        articles = cachedData.articles || [];
+        followingArticles = cachedData.followingArticles || [];
+        personalArticles = cachedData.personalArticles || [];
+        followingExperts = cachedData.followingExperts || [];
+        recommendedExperts = cachedData.recommendedExperts || [];
+
+        console.log('✅ 資料載入成功！', {
+            articles: articles.length,
+            followingArticles: followingArticles.length,
+            personalArticles: personalArticles.length
+        });
+
+        return cachedData;
+    } catch (error) {
+        console.error('❌ 載入資料失敗:', error);
+        // 如果載入失敗，使用空資料
+        articles = [];
+        followingArticles = [];
+        personalArticles = [];
+        followingExperts = [];
+        recommendedExperts = [];
+        return null;
     }
-];
+}
+
+// 獲取所有文章（合併所有來源）
+function getAllArticles() {
+    return [...articles, ...followingArticles, ...personalArticles];
+}
+
+// 根據 ID 獲取文章
+function getArticleById(id) {
+    return getAllArticles().find(article => article.id === parseInt(id) || article.id === id);
+}
+
+// 根據分類獲取文章
+function getArticlesByCategory(category, source = 'articles') {
+    let sourceArticles;
+    switch (source) {
+        case 'following':
+            sourceArticles = followingArticles;
+            break;
+        case 'personal':
+            sourceArticles = personalArticles;
+            break;
+        default:
+            sourceArticles = articles;
+    }
+
+    if (category === 'all') {
+        return sourceArticles;
+    }
+    return sourceArticles.filter(article => article.category === category);
+}
+
+// 搜尋文章
+function searchArticles(keyword) {
+    const lowerKeyword = keyword.toLowerCase();
+    return getAllArticles().filter(article =>
+        article.title.toLowerCase().includes(lowerKeyword) ||
+        article.excerpt.toLowerCase().includes(lowerKeyword) ||
+        article.tags.some(tag => tag.toLowerCase().includes(lowerKeyword))
+    );
+}
+
+// ==================== UI 載入狀態函數 ====================
+
+// 顯示載入狀態
+function showLoadingState() {
+    const containers = ['discover-articles', 'following-articles', 'personal-articles'];
+    containers.forEach(containerId => {
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.innerHTML = `
+                <div class="loading-state" style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 60px 20px;
+                    color: #666;
+                ">
+                    <div class="loading-spinner" style="
+                        width: 40px;
+                        height: 40px;
+                        border: 4px solid #f1f1f1;
+                        border-top-color: #7bcf7b;
+                        border-radius: 50%;
+                        animation: spin 1s linear infinite;
+                    "></div>
+                    <p style="margin-top: 16px;">載入資料中...</p>
+                </div>
+            `;
+        }
+    });
+
+    // 添加動畫樣式
+    if (!document.getElementById('loading-styles')) {
+        const style = document.createElement('style');
+        style.id = 'loading-styles';
+        style.textContent = `
+            @keyframes spin {
+                to { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+// 隱藏載入狀態
+function hideLoadingState() {
+    const loadingElements = document.querySelectorAll('.loading-state');
+    loadingElements.forEach(el => el.remove());
+}
+
+// 顯示錯誤狀態
+function showErrorState() {
+    const containers = ['discover-articles', 'following-articles', 'personal-articles'];
+    containers.forEach(containerId => {
+        const container = document.getElementById(containerId);
+        if (container) {
+            container.innerHTML = `
+                <div class="error-state" style="
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 60px 20px;
+                    text-align: center;
+                ">
+                    <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+                    <p style="color: #666; margin-bottom: 20px;">載入資料失敗，請稍後再試</p>
+                    <button onclick="location.reload()" style="
+                        padding: 10px 24px;
+                        background-color: #7bcf7b;
+                        color: #000;
+                        border: none;
+                        border-radius: 20px;
+                        cursor: pointer;
+                        font-size: 14px;
+                        font-weight: 600;
+                    ">重新載入</button>
+                </div>
+            `;
+        }
+    });
+}
 
 // 渲染文章列表
 function renderArticles(containerID, articleData) {
@@ -260,20 +244,38 @@ function renderExperts(containerID, expertData) {
     container.innerHTML = expertsHTML;
 }
 
-// 初始化頁面
-document.addEventListener('DOMContentLoaded', function () {
-    // 渲染文章列表
-    renderArticles('discover-articles', articles);
-    renderArticles('following-articles', followingArticles);
-    renderArticles('personal-articles', personalArticles);
+// 初始化頁面 - 改為異步載入
+document.addEventListener('DOMContentLoaded', async function () {
+    console.log('🚀 頁面初始化中...');
 
-    // 渲染專家列表
-    renderExperts('following-experts', followingExperts);
-    renderExperts('recommended-experts', recommendedExperts);
+    // 顯示載入狀態
+    showLoadingState();
 
+    try {
+        // 從 JSON 載入資料
+        await loadDataFromJSON();
 
-    categorizeArticles();
-    initAllTabSwitching();
+        // 隱藏載入狀態
+        hideLoadingState();
+
+        // 渲染文章列表
+        renderArticles('discover-articles', articles);
+        renderArticles('following-articles', followingArticles);
+        renderArticles('personal-articles', personalArticles);
+
+        // 渲染專家列表
+        renderExperts('following-experts', followingExperts);
+        renderExperts('recommended-experts', recommendedExperts);
+
+        categorizeArticles();
+        initAllTabSwitching();
+
+        console.log('✅ 頁面初始化完成！');
+    } catch (error) {
+        console.error('❌ 初始化失敗:', error);
+        hideLoadingState();
+        showErrorState();
+    }
 
     // 頁面導航切換時重新初始化標籤
     const navButtons = document.querySelectorAll('.nav-button[data-page]');
@@ -517,6 +519,9 @@ function showArticleDetail(article) {
     const isSaved = localStorage.getItem(`saved_${article.id}`) === 'true';
     const currentLikes = isLiked ? article.likes + 1 : article.likes;
 
+    // 使用 JSON 中的 content 欄位，如果沒有則使用 excerpt
+    const articleContent = article.content || `<p>${article.excerpt}</p><p>這是文章的詳細內容。在實際應用中，這裡會顯示完整的文章內容，包括多個段落、圖片、引用等豐富的內容格式。</p><p>本文深入探討了相關主題，為讀者提供了實用的見解和建議。透過詳細的分析和專業的觀點，幫助讀者更好地理解這個領域的知識。</p><p>除了基本的介紹之外，我們還會分享一些實用的技巧和經驗，讓讀者能夠將所學應用到實際生活中。</p>`;
+
     // 生成文章詳情內容
     const detailHTML = `
                     <img src="${article.image}" alt="${article.title}" class="article-header-image">
@@ -536,10 +541,7 @@ function showArticleDetail(article) {
                         </div>
                         
                         <div class="article-body">
-                            <p>${article.excerpt}</p>
-                            <p>這是文章的詳細內容。在實際應用中，這裡會顯示完整的文章內容，包括多個段落、圖片、引用等豐富的內容格式。</p>
-                            <p>本文深入探討了相關主題，為讀者提供了實用的見解和建議。透過詳細的分析和專業的觀點，幫助讀者更好地理解這個領域的知識。</p>
-                            <p>除了基本的介紹之外，我們還會分享一些實用的技巧和經驗，讓讀者能夠將所學應用到實際生活中。</p>
+                            ${articleContent}
                         </div>
                         
                         <div class="article-actions-large">
@@ -803,23 +805,28 @@ document.addEventListener('modalShown', function () {
 });
 // 為所有文章添加分類標籤
 function categorizeArticles() {
-    // 發現頁面文章分類
+    // 發現頁面文章分類 - 只有在沒有 category 時才分配
     articles.forEach(article => {
-        article.category = article.tags.includes("真假鑑定") ? "verification" :
-            article.date > "2023-10-01" ? "latest" :
-                article.likes > 400 ? "popular" : "recommended";
+        if (!article.category) {
+            article.category = article.tags.includes("真假鑑定") ? "verification" :
+                article.date > "2023-10-01" ? "latest" :
+                    article.likes > 400 ? "popular" : "recommended";
+        }
     });
 
-    // 關注頁面文章分類
+    // 關注頁面文章分類 - 只有在沒有 category 時才分配
     followingArticles.forEach(article => {
-        article.category = article.author.name === "Sarah Wong" || article.author.name === "Michael Chen" ? "expert" : "friend";
+        if (!article.category) {
+            article.category = article.author.name === "Sarah Wong" || article.author.name === "Michael Chen" ? "expert" : "friend";
+        }
     });
 
-    // 個人頁面文章分類
+    // 個人頁面文章分類 - 保留 JSON 中的 category
     personalArticles.forEach((article, index) => {
-        // 模擬不同類別的文章，實際應用中應該有明確的分類
-        article.category = index % 3 === 0 ? "draft" :
-            index % 2 === 0 ? "saved" : "my";
+        if (!article.category) {
+            article.category = index % 3 === 0 ? "draft" :
+                index % 2 === 0 ? "saved" : "my";
+        }
     });
 }
 
