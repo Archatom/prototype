@@ -29,7 +29,7 @@ function deploy() {
 
     isDeploying = true;
     const timestamp = new Date().toLocaleString('zh-TW');
-    
+
     console.log(`📦 [${timestamp}] 偵測到變更，開始部署...`);
     console.log('');
 
