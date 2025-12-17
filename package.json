@@ -1,0 +1,12 @@
+{
+    "name": "stockx-community",
+    "version": "1.0.0",
+    "description": "StockX 球鞋社群網站",
+    "scripts": {
+        "watch": "node watch.js",
+        "deploy": "git add . && git commit -m \"更新文章\" && git push origin main"
+    },
+    "devDependencies": {
+        "chokidar": "^3.5.3"
+    }
+}
