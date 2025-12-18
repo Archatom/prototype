@@ -1912,6 +1912,23 @@
         color: var(--stockx-black);
     }
 
+    /* 刪除按鈕樣式 */
+    .action-button.delete-btn {
+        color: #dc3545;
+        margin-left: auto;
+    }
+
+    .action-button.delete-btn:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .action-button.delete-btn svg {
+        fill: currentColor;
+        width: 16px;
+        height: 16px;
+    }
+
     /* 修改超小螢幕下的導航欄樣式 */
     @media (max-width: 600px) {
         .header {

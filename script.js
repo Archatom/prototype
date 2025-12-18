@@ -1,5 +1,7 @@
 // ==================== API 資料載入系統 ====================
 
+// ==================== API 資料載入系統 ====================
+
 // 資料快取
 let cachedData = null;
 let articles = [];
@@ -7,6 +9,32 @@ let followingArticles = [];
 let personalArticles = [];
 let followingExperts = [];
 let recommendedExperts = [];
+
+// localStorage 的 key
+const STORAGE_KEY = 'user_articles';
+const DELETED_JSON_ARTICLES_KEY = 'deleted_json_articles'; // 新增：記錄已刪除的 JSON 文章
+
+// 從 localStorage 載入用戶發布的文章
+function loadUserArticles() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    return saved ? JSON.parse(saved) : [];
+}
+
+// 儲存用戶文章到 localStorage
+function saveUserArticles(userArticles) {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(userArticles));
+}
+
+// 新增：載入已刪除的 JSON 文章 ID 列表
+function loadDeletedJsonArticles() {
+    const saved = localStorage.getItem(DELETED_JSON_ARTICLES_KEY);
+    return saved ? JSON.parse(saved) : [];
+}
+
+// 新增：儲存已刪除的 JSON 文章 ID
+function saveDeletedJsonArticles(deletedIds) {
+    localStorage.setItem(DELETED_JSON_ARTICLES_KEY, JSON.stringify(deletedIds));
+}
 
 // 從 JSON 檔案載入資料
 async function loadDataFromJSON() {
@@ -24,28 +52,136 @@ async function loadDataFromJSON() {
         // 將資料分配到全域變數
         articles = cachedData.articles || [];
         followingArticles = cachedData.followingArticles || [];
-        personalArticles = cachedData.personalArticles || [];
         followingExperts = cachedData.followingExperts || [];
         recommendedExperts = cachedData.recommendedExperts || [];
+
+        // 載入已刪除的 JSON 文章 ID 列表
+        const deletedJsonArticleIds = loadDeletedJsonArticles();
+
+        // 過濾掉已刪除的 JSON 文章
+        let jsonPersonalArticles = (cachedData.personalArticles || []).filter(
+            article => !deletedJsonArticleIds.includes(article.id)
+        );
+
+        // 載入用戶發布的文章
+        const userArticles = loadUserArticles();
+
+        // 合併：用戶文章在前，JSON 文章在後
+        personalArticles = [...userArticles, ...jsonPersonalArticles];
 
         console.log('✅ 資料載入成功！', {
             articles: articles.length,
             followingArticles: followingArticles.length,
-            personalArticles: personalArticles.length
+            personalArticles: personalArticles.length,
+            userArticles: userArticles.length,
+            jsonPersonalArticles: jsonPersonalArticles.length,
+            deletedJsonArticles: deletedJsonArticleIds.length
         });
 
         return cachedData;
     } catch (error) {
         console.error('❌ 載入資料失敗:', error);
-        // 如果載入失敗，使用空資料
+        // 如果載入失敗，至少載入用戶的文章
+        const userArticles = loadUserArticles();
+        personalArticles = userArticles;
         articles = [];
         followingArticles = [];
-        personalArticles = [];
         followingExperts = [];
         recommendedExperts = [];
         return null;
     }
 }
+
+// 新增：發布新文章
+function publishNewArticle(title, content, tags = []) {
+    const userArticles = loadUserArticles();
+    const newId = Date.now();
+
+    const newArticle = {
+        id: newId,
+        title: title,
+        excerpt: content.substring(0, 100) + (content.length > 100 ? '...' : ''),
+        content: `<p>${content.replace(/\n/g, '</p><p>')}</p>`,
+        author: {
+            name: "我",
+            avatar: "img/people7.jpg"
+        },
+        date: new Date().toISOString().split('T')[0],
+        image: "img/1.jpg",
+        tags: tags,
+        likes: 0,
+        comments: 0,
+        shares: 0,
+        category: "my",
+        isUserArticle: true // 標記為用戶文章
+    };
+
+    userArticles.unshift(newArticle);
+    saveUserArticles(userArticles);
+    personalArticles.unshift(newArticle);
+
+    console.log('✅ 文章發布成功！', newArticle);
+    return newArticle;
+}
+
+// 新增：儲存草稿
+function saveAsDraft(title, content, tags = []) {
+    const userArticles = loadUserArticles();
+    const newId = Date.now();
+
+    const draftArticle = {
+        id: newId,
+        title: title || '未命名草稿',
+        excerpt: content ? content.substring(0, 100) + (content.length > 100 ? '...' : '') : '空白草稿',
+        content: content ? `<p>${content.replace(/\n/g, '</p><p>')}</p>` : '',
+        author: {
+            name: "我",
+            avatar: "img/people7.jpg"
+        },
+        date: new Date().toISOString().split('T')[0],
+        image: "img/1.jpg",
+        tags: tags,
+        likes: 0,
+        comments: 0,
+        shares: 0,
+        category: "draft",
+        isUserArticle: true // 標記為用戶文章
+    };
+
+    userArticles.unshift(draftArticle);
+    saveUserArticles(userArticles);
+    personalArticles.unshift(draftArticle);
+
+    console.log('✅ 草稿儲存成功！', draftArticle);
+    return draftArticle;
+}
+
+// 修正：刪除文章（區分用戶文章和 JSON 文章）
+function deleteArticle(articleId) {
+    // 先檢查是否為用戶文章
+    const userArticles = loadUserArticles();
+    const userArticleIndex = userArticles.findIndex(a => a.id === articleId);
+
+    if (userArticleIndex !== -1) {
+        // 是用戶文章，從 localStorage 刪除
+        userArticles.splice(userArticleIndex, 1);
+        saveUserArticles(userArticles);
+        console.log('✅ 用戶文章已刪除！', articleId);
+    } else {
+        // 是 JSON 文章，加入已刪除列表
+        const deletedIds = loadDeletedJsonArticles();
+        if (!deletedIds.includes(articleId)) {
+            deletedIds.push(articleId);
+            saveDeletedJsonArticles(deletedIds);
+            console.log('✅ JSON 文章已標記為刪除！', articleId);
+        }
+    }
+
+    // 從全域變數中移除
+    personalArticles = personalArticles.filter(a => a.id !== articleId);
+}
+
+// ...existing code...
 
 // 獲取所有文章（合併所有來源）
 function getAllArticles() {
@@ -343,33 +479,68 @@ document.addEventListener('DOMContentLoaded', async function () {
     });
 
     publishButton.addEventListener('click', function () {
-        const title = document.getElementById('articleTitle').value;
-        const content = document.getElementById('articleContent').value;
+        const title = document.getElementById('articleTitle').value.trim();
+        const content = document.getElementById('articleContent').value.trim();
+
+        // 收集標籤
+        const tagElements = document.querySelectorAll('#tagList .tag-item');
+        const tags = Array.from(tagElements).map(el => el.textContent.replace('×', '').trim());
 
         if (title && content) {
-            // 模擬發布文章
-            alert('文章已成功發布！');
+            // 發布文章
+            const newArticle = publishNewArticle(title, content, tags);
+
+            // 顯示成功訊息
+            alert('🎉 文章已成功發布！');
+
+            // 關閉彈窗
             writeModal.classList.remove('active');
 
             // 清空表單
             document.getElementById('articleTitle').value = '';
             document.getElementById('articleContent').value = '';
             document.getElementById('tagList').innerHTML = '';
+
+            // 重新渲染個人專欄的文章
+            renderArticles('personal-articles', personalArticles.filter(a => a.category === 'my'));
+
+            // 如果目前在個人專欄頁面，切換到「我的文章」標籤
+            const personalPage = document.getElementById('personal-page');
+            if (personalPage && personalPage.style.display !== 'none') {
+                const tabs = personalPage.querySelectorAll('.feed-tab');
+                tabs.forEach(t => t.classList.remove('active'));
+                tabs[0].classList.add('active');
+                renderArticles('personal-articles', personalArticles.filter(a => a.category === 'my'));
+            }
         } else {
-            alert('請填寫標題和內容');
+            alert('⚠️ 請填寫標題和內容');
         }
     });
 
     draftButton.addEventListener('click', function () {
-        const title = document.getElementById('articleTitle').value;
-        const content = document.getElementById('articleContent').value;
+        const title = document.getElementById('articleTitle').value.trim();
+        const content = document.getElementById('articleContent').value.trim();
+
+        // 收集標籤
+        const tagElements = document.querySelectorAll('#tagList .tag-item');
+        const tags = Array.from(tagElements).map(el => el.textContent.replace('×', '').trim());
 
         if (title || content) {
-            // 模擬儲存草稿
-            alert('文章已儲存為草稿！');
+            // 儲存為草稿
+            const draftArticle = saveAsDraft(title, content, tags);
+
+            alert('📝 文章已儲存為草稿！');
             writeModal.classList.remove('active');
+
+            // 清空表單
+            document.getElementById('articleTitle').value = '';
+            document.getElementById('articleContent').value = '';
+            document.getElementById('tagList').innerHTML = '';
+
+            // 重新渲染草稿區
+            renderArticles('personal-articles', personalArticles.filter(a => a.category === 'draft'));
         } else {
-            alert('請至少填寫標題或內容');
+            alert('⚠️ 請至少填寫標題或內容');
         }
     });
 
@@ -648,22 +819,21 @@ function setupArticleDetailButtons() {
     if (likeButton) {
         likeButton.addEventListener('click', function () {
             const articleId = this.getAttribute('data-article-id');
+            const isNowLiked = !this.classList.contains('liked');
+
+            // 更新按鈕狀態
             this.classList.toggle('liked');
 
             // 更新讚數
             const likeCountElement = this.querySelector('span');
             let likeCount = parseInt(likeCountElement.textContent);
+            likeCountElement.textContent = isNowLiked ? likeCount + 1 : likeCount - 1;
 
-            if (this.classList.contains('liked')) {
-                likeCountElement.textContent = likeCount + 1;
-                localStorage.setItem(`liked_${articleId}`, 'true');
-            } else {
-                likeCountElement.textContent = likeCount - 1;
-                localStorage.setItem(`liked_${articleId}`, 'false');
-            }
+            // 保存到 localStorage
+            localStorage.setItem(`liked_${articleId}`, isNowLiked ? 'true' : 'false');
 
-            // 同步更新主頁面的相應按鈕
-            updateMainPageButton(articleId, 'like', this.classList.contains('liked'));
+            // 同步到主頁面
+            updateMainPageButton(articleId, 'like', isNowLiked);
         });
     }
 
@@ -672,20 +842,20 @@ function setupArticleDetailButtons() {
     if (saveButton) {
         saveButton.addEventListener('click', function () {
             const articleId = this.getAttribute('data-article-id');
+            const isNowSaved = !this.classList.contains('saved');
+
+            // 更新按鈕狀態
             this.classList.toggle('saved');
 
             // 更新文字
             const saveTextElement = this.querySelector('span');
-            if (this.classList.contains('saved')) {
-                saveTextElement.textContent = '已收藏';
-                localStorage.setItem(`saved_${articleId}`, 'true');
-            } else {
-                saveTextElement.textContent = '收藏';
-                localStorage.setItem(`saved_${articleId}`, 'false');
-            }
+            saveTextElement.textContent = isNowSaved ? '已收藏' : '收藏';
 
-            // 同步更新主頁面的相應按鈕
-            updateMainPageButton(articleId, 'save', this.classList.contains('saved'));
+            // 保存到 localStorage
+            localStorage.setItem(`saved_${articleId}`, isNowSaved ? 'true' : 'false');
+
+            // 同步到主頁面
+            updateMainPageButton(articleId, 'save', isNowSaved);
         });
     }
 }
@@ -924,7 +1094,7 @@ markAllReadButton.addEventListener('click', function (e) {
     document.querySelectorAll('.notification-item').forEach(item => {
         item.classList.remove('unread');
     });
-    // 隐藏通知徽章
+    // 隱藏通知徽章
     notificationBadge.style.display = 'none';
 });
 
@@ -957,15 +1127,15 @@ function updateNotificationBadge() {
 
 // 初始化通知徽章
 updateNotificationBadge();
-// 在文档加载完成后执行
+// 在文檔加載完成後執行
 document.addEventListener('DOMContentLoaded', function () {
-    // 第一次创建相关商品链接
+    // 第一次創建相關商品鏈接
     addProductLinks();
 
-    // 监听模态窗口显示事件
+    // 監聽模態窗口顯示事件
     document.addEventListener('modalShown', addProductLinks);
 
-    // 监听文章详情模态窗口的可见性变化
+    // 監聽文章詳情模態窗口的可見性變化
     const observer = new MutationObserver(function (mutations) {
         mutations.forEach(function (mutation) {
             if (mutation.target.classList.contains('active')) {
@@ -979,16 +1149,16 @@ document.addEventListener('DOMContentLoaded', function () {
         observer.observe(articleModal, { attributes: true, attributeFilter: ['class'] });
     }
 
-    // 手动添加商品链接的函数
+    // 手動添加商品鏈接的函數
     function addProductLinks() {
-        // 查找所有没有链接包裹的相关商品卡片
+        // 查找所有沒有鏈接包裹的相關商品卡片
         const productCards = document.querySelectorAll('.related-product-card:not(.linked)');
 
         productCards.forEach(card => {
-            // 标记为已处理
+            // 標記為已處理
             card.classList.add('linked');
 
-            // 如果卡片不在链接中，则添加链接
+            // 如果卡片不在鏈接中，則添加鏈接
             if (!card.closest('a')) {
                 const wrapper = document.createElement('a');
                 wrapper.href = "https://stockx.com/zh-tw/nike-dunk-low-retro-white-black-2021";
